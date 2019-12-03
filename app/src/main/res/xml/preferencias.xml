@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/conf_categoria">
+
+        <EditTextPreference
+            android:key="@string/conf_dias_noti_key"
+            android:title="@string/conf_dias_noti_titulo"
+            android:defaultValue="@string/conf_dias_noti_defecto"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="2"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">FletesMV</string>
+    <string name="title_home">Bienvenida</string>
+    <string name="title_dashboard">Transportes</string>
+    <string name="title_notifications">Mapa</string>
+
+    <string name="action_login">Iniciar Sesión</string>
+    <string name="ayuda_password">Ingrese Contraseña...</string>
+    <string name="ayuda_email">Ingrese Mail...</string>
+    <string name="title_activity_login">Login</string>
+    <string name="texto_registrarse">Aún no está registrado? Regístrese ahora!</string>
+
+    <string name="title_activity_registro">Registro de Usuario</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="action_confirmar_registro">Confirmar</string>
+    <string name="bienvenida_registro">Registro de Usuario</string>
+    <string name="txt_nombre">Nombre</string>
+    <string name="txt_apellido">Apellido</string>
+    <string name="txt_mail">Mail</string>
+    <string name="txt_contrasena">Contraseña</string>
+
+    <string name="title_Logout"> Cerrar Sesión</string>
+    <string name="txt_logout">Cerrar Sesión</string>
+    <string name="title_transporte">Transportes</string>
+    <string name="texto_desde">Origen</string>
+    <string name="texto_hasta">Destino</string>
+
+    <string name="title_configuraciones">Configuraciones</string>
+    <string name="conf_dias_noti_defecto">1</string>
+    <string name="conf_dias_noti_titulo">Tiempo de Anticipación (días)</string>
+    <string name="conf_dias_noti_key">conf_dias_noti</string>
+    <string name="conf_dias_noti_summary">Será notificado %s días antes de cada traslado.</string>
+    <string name="conf_categoria">Notificaciones</string>
+    <string name="transporte_info_titulo">Transporte %s - %s</string>
+    <string name="title_transporte_vehiculo">Vehículo</string>
+    <string name="title_transporte_vehiculo_marca">Marca</string>
+    <string name="title_transporte_vehiculo_modelo">Modelo</string>
+    <string name="title_transporte_vehiculo_matricula">Matrícula</string>
+    <string name="title_transporte_vehiculo_chofer">Chofer</string>
+    <string name="title_transporte_recepcion">Recepción</string>
+    <string name="title_transporte_recepcion_nombre">Receptor</string>
+    <string name="title_transporte_recepcion_observacion">Observación</string>
+    <string name="title_transporte_recepcion_fecha">Fecha</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="violeta">#810791</color>
+    <color name="lila">#803E91</color>
+    <color name="lila_claro">#8E6999</color>
+
+    <color name="blanco">#FFFFFF</color>
+
+
+    <color name="estado_pendiente">#ffd0ca</color>
+    <color name="estado_iniciado">#ffd2e6</color>
+    <color name="estado_cargando">#f6cfff</color>
+    <color name="estado_viajando">#e4dbff</color>
+    <color name="estado_descargado">#ffffb9</color>
+    <color name="estado_finalizado">#dfffcf</color>
+
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4dp"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:id="@+id/transporte_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/transporte_id"
+            android:layout_width="75sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            style="@style/Texto_Grande"/>
+
+        <TextView
+            android:id="@+id/transporte_texto_desde"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp"
+            android:text="@string/texto_desde"
+            android:layout_toRightOf="@+id/transporte_id"
+            android:textAlignment="center"
+            android:layout_centerVertical="true"
+            style="@style/Titulo_Formulario"/>
+
+        <TextView
+            android:id="@+id/transporte_origen_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45sp"
+            android:layout_toRightOf="@+id/transporte_texto_desde"/>
+
+<!--        <TextView-->
+<!--            android:id="@+id/transporte_texto_hasta"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="left"-->
+<!--            android:text="@string/texto_hasta"-->
+<!--            android:layout_marginLeft="15sp"-->
+<!--            android:layout_marginTop="15sp"-->
+<!--            android:layout_below="@+id/transporte_texto_desde"-->
+<!--            android:layout_toRightOf="@+id/transporte_id"-->
+<!--            style="@style/Titulo_Formulario"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/transporte_origen_destino"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginLeft="45sp"-->
+<!--            android:layout_marginTop="15sp"-->
+<!--            android:layout_toRightOf="@+id/transporte_texto_hasta"/>-->
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

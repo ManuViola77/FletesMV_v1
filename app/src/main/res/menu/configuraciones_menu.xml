@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Configuraciones"
+        android:title="@string/title_configuraciones"/>
+
+    <item android:id="@+id/CerrarSesion"
+        android:title="@string/title_Logout"/>
+
+</menu>
