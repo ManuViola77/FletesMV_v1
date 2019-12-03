@@ -2,6 +2,7 @@ package com.bios.mv.fletesmv_v1.ui.transporte;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.text.ParseException;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class TransporteActivity extends AppCompatActivity {
 
@@ -43,6 +45,14 @@ public class TransporteActivity extends AppCompatActivity {
     private TextView receptor;
     private TextView observacion;
     private TextView rec_fecha;
+
+    private CardView transporte_cv;
+
+    private TextView txt_vehiculo;
+    private CardView vehiculo_cv;
+
+    private TextView txt_recepcion;
+    private CardView recepcion_cv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +73,14 @@ public class TransporteActivity extends AppCompatActivity {
         receptor = findViewById(R.id.transporte_info_vehiculo_recepcion_nombre);
         observacion = findViewById(R.id.transporte_info_recepcion_observacion);
         rec_fecha = findViewById(R.id.transporte_info_recepcion_fecha);
+
+        transporte_cv = findViewById(R.id.transporte_info_transporte_cv);
+
+        txt_vehiculo = findViewById(R.id.transporte_info_vehiculo);
+        vehiculo_cv = findViewById(R.id.transporte_info_vehiculo_cv);
+
+        txt_recepcion = findViewById(R.id.transporte_info_recepcion);
+        recepcion_cv = findViewById(R.id.transporte_info_recepcion_cv);
 
         String idTransporteString = getIntent().getStringExtra(TRANSPORTE_KEY);
 
@@ -123,6 +141,9 @@ public class TransporteActivity extends AppCompatActivity {
                 modelo.setText(vehiculo.getModelo());
                 matricula.setText(vehiculo.getMatricula());
                 chofer.setText(vehiculo.getChofer());
+
+                txt_vehiculo.setVisibility(View.VISIBLE);
+                vehiculo_cv.setVisibility(View.VISIBLE);
             }
 
             if (transporte.getRecepcion() != null){
@@ -138,7 +159,11 @@ public class TransporteActivity extends AppCompatActivity {
                     rec_fecha.setText(recepcion.getFecha());
                 }
 
+                txt_recepcion.setVisibility(View.VISIBLE);
+                recepcion_cv.setVisibility(View.VISIBLE);
             }
+
+            transporte_cv.setVisibility(View.VISIBLE);
         } else
             titulo.setText("Fallo en el convertidor de Transporte, retornó NULL");
     }

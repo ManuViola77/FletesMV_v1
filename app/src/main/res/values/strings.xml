@@ -31,7 +31,9 @@
     <string name="conf_dias_noti_key">conf_dias_noti</string>
     <string name="conf_dias_noti_summary">Será notificado %s días antes de cada traslado.</string>
     <string name="conf_categoria">Notificaciones</string>
+
     <string name="transporte_info_titulo">Transporte %s - %s</string>
+    <string name="title_transporte_sin_datos">Transporte</string>
     <string name="title_transporte_vehiculo">Vehículo</string>
     <string name="title_transporte_vehiculo_marca">Marca</string>
     <string name="title_transporte_vehiculo_modelo">Modelo</string>
