@@ -1,5 +1,7 @@
 package com.bios.mv.fletesmv_v1.ui.transporte;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +56,15 @@ public class TransporteActivity extends AppCompatActivity {
     private TextView txt_recepcion;
     private CardView recepcion_cv;
 
+    private Transporte transporte;
+
+    private String extra_transporte_origen_latitud = Constantes.getExtra_transporte_origen_latitud();
+    private String extra_transporte_origen_longitud = Constantes.getExtra_transporte_origen_longitud();
+    private String extra_transporte_destino_latitud = Constantes.getExtra_transporte_destino_latitud();
+    private String extra_transporte_destino_longitud = Constantes.getExtra_transporte_destino_longitud();
+    private String extra_transporte_modo = Constantes.getExtra_transporte_modo();
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +75,9 @@ public class TransporteActivity extends AppCompatActivity {
         fecha = findViewById(R.id.transporte_info_fecha);
         origen = findViewById(R.id.transporte_info_origen_direccion);
         destino = findViewById(R.id.transporte_info_destino_direccion);
+
+        origen.setPaintFlags(origen.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        destino.setPaintFlags(destino.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         marca = findViewById(R.id.transporte_info_vehiculo_marca);
         modelo = findViewById(R.id.transporte_info_vehiculo_modelo);
@@ -118,7 +132,7 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void manejarRespuesta(JSONObject respuesta) {
-        Transporte transporte = TransporteConverter.convertTransporte(respuesta, true);
+        transporte = TransporteConverter.convertTransporte(respuesta, true);
 
         String fechaString;
 
@@ -168,4 +182,23 @@ public class TransporteActivity extends AppCompatActivity {
             titulo.setText("Fallo en el convertidor de Transporte, retornó NULL");
     }
 
+
+    public void abrirMapaEnOrigen(View view) {
+        abrirMapa("Origen");
+
+    }
+
+    public void abrirMapaEnDestino(View view) {
+        abrirMapa("Destino");
+    }
+
+    private void abrirMapa(String modo) {
+        Intent intent = new Intent(this, MapaTransporteActivity.class);
+        intent.putExtra(extra_transporte_origen_latitud,transporte.getOrigen_latitud());
+        intent.putExtra(extra_transporte_origen_longitud,transporte.getOrigen_longitud());
+        intent.putExtra(extra_transporte_destino_latitud,transporte.getDestino_latitud());
+        intent.putExtra(extra_transporte_destino_longitud,transporte.getDestino_longitud());
+        intent.putExtra(extra_transporte_modo,modo);
+        startActivity(intent);
+    }
 }

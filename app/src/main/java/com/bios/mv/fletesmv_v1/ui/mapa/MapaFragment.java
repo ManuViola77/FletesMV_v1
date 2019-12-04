@@ -47,7 +47,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     private MapaViewModel mapaViewModel;
     private View rootView;
-    GoogleMap mapa_transportes;
+    private GoogleMap mapa_transportes;
 
     private RequestQueue requestQueue;
 
@@ -131,12 +131,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         mapa_transportes = googleMap;
 
         configureMap();
-
-//        moveCamera();
-//
-//        LatLng lugarEnMapa = new LatLng(-34.9055446, -56.1890759);
-//        addMarker(lugarEnMapa);
-
     }
 
     private void configureMap() {
@@ -144,13 +138,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         uiSettings.setCompassEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setMapToolbarEnabled(true);
-//
-//        LatLngBounds latLngBounds = new LatLngBounds(
-//                new LatLng(-34.9064974,-56.204373),
-//                new LatLng(-34.9053486,-56.1420849)
-//        );
-//
-//        mapa_transportes.setLatLngBoundsForCameraTarget(latLngBounds);
     }
 
     private void agregarOrigenAMapa(Transporte transporte) {
@@ -167,17 +154,4 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         mapa_transportes.addMarker(marker);
     }
 
-//    private void addMarker(LatLng lugarEnMapa) {
-//        MarkerOptions marker = new MarkerOptions();
-//        marker.position(lugarEnMapa);
-//        marker.title("BIOS (se supone)");
-//
-//        mapa_transportes.addMarker(marker);
-//    }
-
-//    private void moveCamera() {
-//        LatLng lugarEnMapa = new LatLng(-34.9055446, -56.1890759);
-//
-//        mapa_transportes.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));
-//    }
 }

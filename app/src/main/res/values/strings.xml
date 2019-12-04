@@ -43,4 +43,5 @@
     <string name="title_transporte_recepcion_nombre">Receptor</string>
     <string name="title_transporte_recepcion_observacion">Observación</string>
     <string name="title_transporte_recepcion_fecha">Fecha</string>
+    <string name="title_mapa_transporte">Mapa Transporte</string>
 </resources>

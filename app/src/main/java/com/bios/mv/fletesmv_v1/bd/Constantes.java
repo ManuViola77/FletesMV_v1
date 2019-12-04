@@ -23,6 +23,11 @@ public class Constantes {
     private static final String conf_dias_noti_key = "conf_dias_noti";
     private static final String conf_dias_noti_defecto = "1";
 
+    private static final String extra_transporte_origen_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_origen_latitud";
+    private static final String extra_transporte_origen_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_origen_longitud";
+    private static final String extra_transporte_destino_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_latitud";
+    private static final String extra_transporte_destino_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_longitud";
+    private static final String extra_transporte_modo = "com.bios.mv.fletesmv_v1.extra_transporte_modo";
 
     public static String getNOMBRE() {
         return NOMBRE;
@@ -60,5 +65,25 @@ public class Constantes {
 
     public static String getTransporteKey() {
         return TRANSPORTE_KEY;
+    }
+
+    public static String getExtra_transporte_origen_latitud() {
+        return extra_transporte_origen_latitud;
+    }
+
+    public static String getExtra_transporte_origen_longitud() {
+        return extra_transporte_origen_longitud;
+    }
+
+    public static String getExtra_transporte_destino_latitud() {
+        return extra_transporte_destino_latitud;
+    }
+
+    public static String getExtra_transporte_destino_longitud() {
+        return extra_transporte_destino_longitud;
+    }
+
+    public static String getExtra_transporte_modo() {
+        return extra_transporte_modo;
     }
 }

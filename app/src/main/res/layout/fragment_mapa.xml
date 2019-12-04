@@ -26,7 +26,7 @@
         android:id="@+id/mapa_traslados"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250sp"
         map:layout_constraintTop_toBottomOf="@+id/text_mapa"
         map:mapType="terrain" />
 
