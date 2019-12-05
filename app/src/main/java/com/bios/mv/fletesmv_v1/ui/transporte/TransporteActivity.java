@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,8 @@ public class TransporteActivity extends AppCompatActivity {
     private TextView txt_recepcion;
     private CardView recepcion_cv;
 
+    private Button boton_iniciar;
+
     private Transporte transporte;
 
     private String extra_transporte_origen_latitud = Constantes.getExtra_transporte_origen_latitud();
@@ -87,6 +90,8 @@ public class TransporteActivity extends AppCompatActivity {
         receptor = findViewById(R.id.transporte_info_vehiculo_recepcion_nombre);
         observacion = findViewById(R.id.transporte_info_recepcion_observacion);
         rec_fecha = findViewById(R.id.transporte_info_recepcion_fecha);
+
+        boton_iniciar = findViewById(R.id.transporte_info_boton_iniciar);
 
         transporte_cv = findViewById(R.id.transporte_info_transporte_cv);
 
@@ -122,6 +127,13 @@ public class TransporteActivity extends AppCompatActivity {
         );
 
         requestQueue.add(solicitud);
+
+        boton_iniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void manejarError(VolleyError error) {
@@ -178,6 +190,12 @@ public class TransporteActivity extends AppCompatActivity {
             }
 
             transporte_cv.setVisibility(View.VISIBLE);
+
+            if (transporte.getEstado().equals("pendiente")) {
+                boton_iniciar.setVisibility(View.VISIBLE);
+            } else {
+                boton_iniciar.setVisibility(View.GONE);
+            }
         } else
             titulo.setText("Fallo en el convertidor de Transporte, retornó NULL");
     }

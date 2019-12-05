@@ -40,7 +40,7 @@ public class TransporteConverter {
             transporte.setId(Integer.parseInt(jsonObject.getString("id")));
             transporte.setEstado(jsonObject.getString("estado"));
             transporte.setFecha(jsonObject.getString("fecha"));
-            transporte.setOrigen_direccion(jsonObject.getString("origen_direccion"));
+            transporte.setOrigen_direccion(jsonObject.getString("origen_direccion").replaceAll("\n", ""));
             transporte.setOrigen_latitud(Double.valueOf(jsonObject.getString("origen_latitud")));
             transporte.setOrigen_longitud(Double.valueOf(jsonObject.getString("origen_longitud")));
 
@@ -48,7 +48,7 @@ public class TransporteConverter {
 
                 Log.i(Constantes.getTagLog(),jsonObject.toString());
 
-                transporte.setDestino_direccion(jsonObject.getString("destino_direccion"));
+                transporte.setDestino_direccion(jsonObject.getString("destino_direccion").replaceAll("\n", ""));
                 transporte.setDestino_latitud(Double.valueOf(jsonObject.getString("destino_latitud")));
                 transporte.setDestino_longitud(Double.valueOf(jsonObject.getString("destino_longitud")));
 
@@ -99,29 +99,6 @@ public class TransporteConverter {
 
                     transporte.setRecepcion(recepcion);
                 }
-            }
-
-            // DESPUES BORRAR, AHORA DEJO PARA PROBAR LOS DISTINTOS ESTADOS
-            switch (transporte.getId()) {
-                case 47:
-                    transporte.setEstado("iniciado");
-                    break;
-
-                case 9:
-                    transporte.setEstado("cargando");
-                    break;
-
-                case 35:
-                    transporte.setEstado("viajando");
-                    break;
-
-                case 32:
-                    transporte.setEstado("descargado");
-                    break;
-
-                case 23:
-                    transporte.setEstado("finalizado");
-                    break;
             }
 
             return transporte;

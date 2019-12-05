@@ -21,7 +21,7 @@
 
     <string name="title_Logout"> Cerrar Sesión</string>
     <string name="txt_logout">Cerrar Sesión</string>
-    <string name="title_transporte">Transportes</string>
+    <string name="title_transporte">Traslados</string>
     <string name="texto_desde">Origen</string>
     <string name="texto_hasta">Destino</string>
 
@@ -32,8 +32,8 @@
     <string name="conf_dias_noti_summary">Será notificado %s días antes de cada traslado.</string>
     <string name="conf_categoria">Notificaciones</string>
 
-    <string name="transporte_info_titulo">Transporte %s - %s</string>
-    <string name="title_transporte_sin_datos">Transporte</string>
+    <string name="transporte_info_titulo">Traslado %s - %s</string>
+    <string name="title_transporte_sin_datos">Traslado</string>
     <string name="title_transporte_vehiculo">Vehículo</string>
     <string name="title_transporte_vehiculo_marca">Marca</string>
     <string name="title_transporte_vehiculo_modelo">Modelo</string>
@@ -43,5 +43,7 @@
     <string name="title_transporte_recepcion_nombre">Receptor</string>
     <string name="title_transporte_recepcion_observacion">Observación</string>
     <string name="title_transporte_recepcion_fecha">Fecha</string>
-    <string name="title_mapa_transporte">Mapa Transporte</string>
+    <string name="title_mapa_transporte">Mapa Traslado</string>
+    <string name="transportes_iniciar">Iniciar Traslado</string>
+    <string name="transporte_info_boton_iniciar">Iniciar</string>
 </resources>

@@ -15,53 +15,32 @@
 
         <TextView
             android:id="@+id/transporte_id"
+            style="@style/Texto_Grande"
             android:layout_width="75sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAlignment="center"
-            style="@style/Texto_Grande"/>
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/transporte_texto_desde"
+            style="@style/Titulo_Formulario"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="15sp"
-            android:text="@string/texto_desde"
             android:layout_toRightOf="@+id/transporte_id"
-            android:textAlignment="center"
-            android:layout_centerVertical="true"
-            style="@style/Titulo_Formulario"/>
+            android:text="@string/texto_desde"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/transporte_origen_direccion"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_centerVertical="true"
+            android:layout_gravity="center"
             android:layout_marginLeft="45sp"
-            android:layout_toRightOf="@+id/transporte_texto_desde"/>
-
-<!--        <TextView-->
-<!--            android:id="@+id/transporte_texto_hasta"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:text="@string/texto_hasta"-->
-<!--            android:layout_marginLeft="15sp"-->
-<!--            android:layout_marginTop="15sp"-->
-<!--            android:layout_below="@+id/transporte_texto_desde"-->
-<!--            android:layout_toRightOf="@+id/transporte_id"-->
-<!--            style="@style/Titulo_Formulario"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/transporte_origen_destino"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginLeft="45sp"-->
-<!--            android:layout_marginTop="15sp"-->
-<!--            android:layout_toRightOf="@+id/transporte_texto_hasta"/>-->
+            android:layout_toRightOf="@+id/transporte_texto_desde" />
 
     </RelativeLayout>
 
