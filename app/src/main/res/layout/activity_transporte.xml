@@ -189,14 +189,13 @@
                         android:text="@string/title_transporte_vehiculo_matricula"
                         android:textAlignment="center" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/transporte_info_vehiculo_matricula"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="15sp"
-                        android:textAlignment="center"
-                        android:enabled="false"/>
+                        android:textAlignment="center" />
 
                 </LinearLayout>
 

@@ -56,6 +56,7 @@ public class RegistroActivity extends AppCompatActivity {
         mail.setFocusableInTouchMode(true);
         contrasena.setFocusableInTouchMode(true);
 
+        // oculta teclado para que no este apenas se entra a la activity
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         boton_confirmar_registro = findViewById(R.id.boton_confirmar_registro);

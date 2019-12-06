@@ -46,4 +46,8 @@
     <string name="title_mapa_transporte">Mapa Traslado</string>
     <string name="transportes_iniciar">Iniciar Traslado</string>
     <string name="transporte_info_boton_iniciar">Iniciar</string>
+    <string name="title_iniciar_traslado">Iniciar Traslado</string>
+    <string name="iniciar_traslado_titulo">Iniciar Traslado %s</string>
+    <string name="texto_iniciar_traslado">Por favor, ingrese los datos del vehículo del traslado.</string>
+    <string name="iniciar_traslado_boton_iniciar">Confirmar</string>
 </resources>

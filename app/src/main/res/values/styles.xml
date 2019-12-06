@@ -19,7 +19,7 @@
 
     <style name="Titulo_Formulario">
         <item name="android:textColor">@color/lila</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="Texto_Mediano">

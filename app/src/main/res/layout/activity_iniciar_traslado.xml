@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/iniciar_traslado_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Texto_Mediano"
+        android:text="@string/iniciar_traslado_titulo"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_iniciar_traslado"
+        style="@style/Texto"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:layout_marginLeft="10sp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="10sp">
+
+        <TextView
+            style="@style/Titulo_Formulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_transporte_vehiculo_marca"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/iniciar_traslado_vehiculo_marca"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10sp">
+
+        <TextView
+            style="@style/Titulo_Formulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_transporte_vehiculo_modelo"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/iniciar_traslado_vehiculo_modelo"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10sp">
+
+        <TextView
+            style="@style/Titulo_Formulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_transporte_vehiculo_matricula"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/iniciar_traslado_vehiculo_matricula"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10sp">
+
+        <TextView
+            style="@style/Titulo_Formulario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_transporte_vehiculo_chofer"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/iniciar_traslado_vehiculo_chofer"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/boton_iniciar_traslado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/iniciar_traslado_boton_iniciar"
+        style="@style/Boton"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+</LinearLayout>

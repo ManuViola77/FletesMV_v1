@@ -47,6 +47,11 @@
             android:label="@string/title_mapa_transporte">
         </activity>
 
+        <activity
+            android:name=".ui.transporte.IniciarTrasladoActivity"
+            android:label="@string/title_iniciar_traslado">
+        </activity>
+
 <!--        android:parentActivityName=".ui.transporte.TransporteActivity"-->
 
         <meta-data

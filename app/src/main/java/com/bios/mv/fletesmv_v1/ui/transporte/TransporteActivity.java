@@ -67,6 +67,8 @@ public class TransporteActivity extends AppCompatActivity {
     private String extra_transporte_destino_longitud = Constantes.getExtra_transporte_destino_longitud();
     private String extra_transporte_modo = Constantes.getExtra_transporte_modo();
 
+    private String extra_iniciar_traslado = Constantes.getExtra_iniciar_traslado();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class TransporteActivity extends AppCompatActivity {
         origen = findViewById(R.id.transporte_info_origen_direccion);
         destino = findViewById(R.id.transporte_info_destino_direccion);
 
+        // Subrayo origen y destino para que se sepa que son clickeables
         origen.setPaintFlags(origen.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         destino.setPaintFlags(destino.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -131,7 +134,9 @@ public class TransporteActivity extends AppCompatActivity {
         boton_iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(view.getContext(), IniciarTrasladoActivity.class);
+                intent.putExtra(extra_iniciar_traslado,transporte.getId());
+                startActivity(intent);
             }
         });
     }
@@ -219,4 +224,9 @@ public class TransporteActivity extends AppCompatActivity {
         intent.putExtra(extra_transporte_modo,modo);
         startActivity(intent);
     }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//    }
 }

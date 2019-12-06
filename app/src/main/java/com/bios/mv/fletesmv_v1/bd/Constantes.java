@@ -29,6 +29,8 @@ public class Constantes {
     private static final String extra_transporte_destino_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_longitud";
     private static final String extra_transporte_modo = "com.bios.mv.fletesmv_v1.extra_transporte_modo";
 
+    private static final String extra_iniciar_traslado = "com.bios.mv.fletesmv_v1.extra_iniciar_traslado";
+
     public static String getNOMBRE() {
         return NOMBRE;
     }
@@ -85,5 +87,9 @@ public class Constantes {
 
     public static String getExtra_transporte_modo() {
         return extra_transporte_modo;
+    }
+
+    public static String getExtra_iniciar_traslado() {
+        return extra_iniciar_traslado;
     }
 }
