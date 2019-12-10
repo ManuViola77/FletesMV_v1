@@ -39,17 +39,26 @@
 
         <activity
             android:name=".ui.transporte.TransporteActivity"
-            android:label="@string/title_transporte">
+            android:label="@string/title_transporte"
+            android:launchMode="singleTop">
         </activity>
 
         <activity
             android:name=".ui.transporte.MapaTransporteActivity"
-            android:label="@string/title_mapa_transporte">
+            android:label="@string/title_mapa_transporte"
+            android:parentActivityName=".ui.transporte.TransporteActivity">
         </activity>
 
         <activity
             android:name=".ui.transporte.IniciarTrasladoActivity"
-            android:label="@string/title_iniciar_traslado">
+            android:label="@string/title_iniciar_traslado"
+            android:parentActivityName=".ui.transporte.TransporteActivity">
+        </activity>
+
+        <activity
+            android:name=".ui.transporte.FinalizarTrasladoActivity"
+            android:label="@string/title_finalizar_traslado"
+            android:parentActivityName=".ui.transporte.TransporteActivity">
         </activity>
 
 <!--        android:parentActivityName=".ui.transporte.TransporteActivity"-->

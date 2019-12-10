@@ -229,7 +229,7 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void manejarError(VolleyError error) {
-        Log.e(Constantes.TAG_LOG,error.getMessage());
+        Log.e(Constantes.TAG_LOG,"error: "+error.getMessage());
         Toast.makeText(this,"Error obteniendo datos del traslado",Toast.LENGTH_LONG).show();
 
         finish();

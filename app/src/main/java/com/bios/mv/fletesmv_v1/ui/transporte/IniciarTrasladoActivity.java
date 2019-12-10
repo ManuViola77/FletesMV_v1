@@ -14,17 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
-import com.bios.mv.fletesmv_v1.bd.Recepcion;
 import com.bios.mv.fletesmv_v1.bd.Vehiculo;
-import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 import com.bios.mv.fletesmv_v1.bd.converter.VehiculoConverter;
 
 import org.json.JSONObject;
 
-import java.text.ParseException;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

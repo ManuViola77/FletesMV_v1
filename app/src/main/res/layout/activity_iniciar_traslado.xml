@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/iniciar_traslado_titulo"
@@ -11,109 +11,130 @@
         android:layout_height="wrap_content"
         style="@style/Texto_Mediano"
         android:text="@string/iniciar_traslado_titulo"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_texto_vehiculo"/>
 
     <TextView
+        android:id="@+id/iniciar_traslado_texto_vehiculo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/texto_iniciar_traslado"
         style="@style/Texto"
         android:layout_marginTop="20sp"
         android:textSize="18sp"
-        android:layout_marginLeft="10sp"/>
+        android:layout_marginLeft="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_titulo"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_texto_marca" />
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/iniciar_traslado_texto_marca"
+        style="@style/Titulo_Formulario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20sp"
-        android:layout_marginLeft="10sp">
+        android:layout_gravity="center"
+        android:text="@string/title_transporte_vehiculo_marca"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iniciar_traslado_texto_modelo"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_texto_vehiculo"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_texto_modelo"
+        android:layout_marginLeft="20sp" />
 
-        <TextView
-            style="@style/Titulo_Formulario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/title_transporte_vehiculo_marca"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/iniciar_traslado_vehiculo_marca"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15sp"
+        app:layout_constraintStart_toEndOf="@+id/iniciar_traslado_texto_marca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_texto_vehiculo"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_vehiculo_modelo" />
 
-        <EditText
-            android:id="@+id/iniciar_traslado_vehiculo_marca"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15sp" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/iniciar_traslado_texto_modelo"
+        style="@style/Titulo_Formulario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10sp">
+        android:layout_gravity="center"
+        android:text="@string/title_transporte_vehiculo_modelo"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iniciar_traslado_texto_matricula"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_vehiculo_marca"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_texto_matricula"
+        android:layout_marginLeft="20sp" />
 
-        <TextView
-            style="@style/Titulo_Formulario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/title_transporte_vehiculo_modelo"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/iniciar_traslado_vehiculo_modelo"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15sp"
+        app:layout_constraintStart_toEndOf="@+id/iniciar_traslado_texto_modelo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_vehiculo_marca"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_vehiculo_matricula" />
 
-        <EditText
-            android:id="@+id/iniciar_traslado_vehiculo_modelo"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15sp" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/iniciar_traslado_texto_matricula"
+        style="@style/Titulo_Formulario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10sp">
+        android:layout_gravity="center"
+        android:text="@string/title_transporte_vehiculo_matricula"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iniciar_traslado_texto_chofer"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_texto_modelo"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_texto_chofer"
+        android:layout_marginLeft="20sp" />
 
-        <TextView
-            style="@style/Titulo_Formulario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/title_transporte_vehiculo_matricula"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/iniciar_traslado_vehiculo_matricula"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15sp"
+        app:layout_constraintStart_toEndOf="@+id/iniciar_traslado_texto_matricula"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_vehiculo_modelo"
+        app:layout_constraintBottom_toTopOf="@+id/iniciar_traslado_vehiculo_chofer" />
 
-        <EditText
-            android:id="@+id/iniciar_traslado_vehiculo_matricula"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15sp" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/iniciar_traslado_texto_chofer"
+        style="@style/Titulo_Formulario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10sp">
+        android:layout_gravity="center"
+        android:text="@string/title_transporte_vehiculo_chofer"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iniciar_traslado_texto_matricula"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_texto_matricula"
+        app:layout_constraintBottom_toTopOf="@+id/boton_iniciar_traslado"
+        android:layout_marginLeft="20sp" />
 
-        <TextView
-            style="@style/Titulo_Formulario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/title_transporte_vehiculo_chofer"
-            android:textAlignment="center" />
-
-        <EditText
-            android:id="@+id/iniciar_traslado_vehiculo_chofer"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15sp" />
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/iniciar_traslado_vehiculo_chofer"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15sp"
+        app:layout_constraintStart_toEndOf="@+id/iniciar_traslado_texto_chofer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_vehiculo_matricula"
+        app:layout_constraintBottom_toTopOf="@+id/boton_iniciar_traslado"
+        app:layout_constraintBaseline_toBaselineOf="@+id/iniciar_traslado_texto_chofer" />
 
     <Button
         android:id="@+id/boton_iniciar_traslado"
@@ -123,6 +144,10 @@
         style="@style/Boton"
         android:layout_marginTop="20sp"
         android:layout_gravity="center"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_traslado_texto_chofer"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

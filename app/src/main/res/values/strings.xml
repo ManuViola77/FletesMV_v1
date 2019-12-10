@@ -54,4 +54,5 @@
     <string name="transporte_info_boton_viajar">Viajar</string>
     <string name="transporte_info_boton_descargar">Descargar</string>
     <string name="transporte_info_boton_finalizar">Finalizar</string>
+    <string name="title_finalizar_traslado">Confirmación de traslado finalizado</string>
 </resources>
