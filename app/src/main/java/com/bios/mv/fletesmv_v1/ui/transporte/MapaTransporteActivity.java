@@ -1,6 +1,7 @@
 package com.bios.mv.fletesmv_v1.ui.transporte;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +21,6 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
 
     private GoogleMap mapa_transporte_info;
 
-    private String extra_transporte_origen_latitud = Constantes.getExtra_transporte_origen_latitud();
-    private String extra_transporte_origen_longitud = Constantes.getExtra_transporte_origen_longitud();
-    private String extra_transporte_destino_latitud = Constantes.getExtra_transporte_destino_latitud();
-    private String extra_transporte_destino_longitud = Constantes.getExtra_transporte_destino_longitud();
-    private String extra_transporte_modo = Constantes.getExtra_transporte_modo();
-
     private double origen_latitud;
     private double origen_longitud;
     private double destino_latitud;
@@ -38,13 +33,16 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
 
         setContentView(R.layout.activity_mapa_transporte);
 
+        // Mantengo activa la pantalla para que no tengan que estar presionando para que no se vaya.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            origen_latitud = extras.getDouble(extra_transporte_origen_latitud);
-            origen_longitud = extras.getDouble(extra_transporte_origen_longitud);
-            destino_latitud = extras.getDouble(extra_transporte_destino_latitud);
-            destino_longitud = extras.getDouble(extra_transporte_destino_longitud);
-            modo = extras.getString(extra_transporte_modo);
+            origen_latitud = extras.getDouble(Constantes.extra_transporte_origen_latitud);
+            origen_longitud = extras.getDouble(Constantes.extra_transporte_origen_longitud);
+            destino_latitud = extras.getDouble(Constantes.extra_transporte_destino_latitud);
+            destino_longitud = extras.getDouble(Constantes.extra_transporte_destino_longitud);
+            modo = extras.getString(Constantes.extra_transporte_modo);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -76,7 +74,7 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
         marker.position(lugarEnMapa);
         marker.title("Origen");
 
-        mapa_transporte_info.addMarker(marker);
+        mapa_transporte_info.addMarker(marker).showInfoWindow();
 
         if (modo.equals("Origen"))
             mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));
@@ -87,7 +85,7 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
         marker.position(lugarEnMapa);
         marker.title("Destino");
 
-        mapa_transporte_info.addMarker(marker);
+        mapa_transporte_info.addMarker(marker).showInfoWindow();
 
         if (modo.equals("Destino"))
             mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));

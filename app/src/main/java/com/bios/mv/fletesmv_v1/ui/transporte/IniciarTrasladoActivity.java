@@ -40,20 +40,21 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
 
     private int idTraslado;
 
-    private String extra_iniciar_traslado = Constantes.getExtra_iniciar_traslado();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_iniciar_traslado);
 
+        // Mantengo activa la pantalla para que no tengan que estar presionando para que no se vaya.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         // oculta teclado para que no este apenas se entra a la activity
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            idTraslado = extras.getInt(extra_iniciar_traslado);
+            idTraslado = extras.getInt(Constantes.extra_iniciar_traslado);
         }
 
         titulo = findViewById(R.id.iniciar_traslado_titulo);
@@ -70,7 +71,7 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String URL_transporte_info = Constantes.getUrlTransportes()+"/"+idTraslado;
+                String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTraslado;
 
                 RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
@@ -110,7 +111,7 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
     }
 
     private void manejarError(VolleyError error) {
-        Log.e(Constantes.getTagLog(),error.getMessage());
+        Log.e(Constantes.TAG_LOG,error.getMessage());
         Toast.makeText(this,"Error obteniendo datos del transporte",Toast.LENGTH_LONG).show();
 
         finish();

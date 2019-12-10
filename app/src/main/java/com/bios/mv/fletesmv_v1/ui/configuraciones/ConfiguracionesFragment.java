@@ -25,11 +25,9 @@ public class ConfiguracionesFragment  extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferencias,rootKey);
 
         // obtengo la key y el valor por defecto del parámetro de configuración de días de anticipación de la notificación
-        String conf_dias_noti_key = Constantes.getConf_dias_noti_key();
-        String conf_dias_noti_defecto = Constantes.getConf_dias_noti_defecto();
 
         // Obtengo la Preference de cantidad de días de anticipación de la notificación
-        final EditTextPreference conf_dias_noti = findPreference(conf_dias_noti_key);
+        final EditTextPreference conf_dias_noti = findPreference(Constantes.conf_dias_noti_key);
 
         contexto = getContext();
 
@@ -46,7 +44,7 @@ public class ConfiguracionesFragment  extends PreferenceFragmentCompat {
         });
 
         // Obtengo el valor actual de días de anticipación
-        String diasAnticipacion = defaultSharedPreference.getString(conf_dias_noti_key,conf_dias_noti_defecto);
+        String diasAnticipacion = defaultSharedPreference.getString(Constantes.conf_dias_noti_key,Constantes.conf_dias_noti_defecto);
 
         // Creo un Listener por si cambia la configuración, setearle el valor en el Summary.
         conf_dias_noti.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

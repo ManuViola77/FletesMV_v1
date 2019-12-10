@@ -28,7 +28,7 @@ public class TransporteConverter {
                 transportes.add(transporte);
             }
         } catch (JSONException e) {
-            Log.e(Constantes.getTagLog(), e.getMessage());
+            Log.e(Constantes.TAG_LOG, e.getMessage());
         }
 
         return transportes;
@@ -46,7 +46,7 @@ public class TransporteConverter {
 
             if (isInfo) {
 
-                Log.i(Constantes.getTagLog(),jsonObject.toString());
+                Log.i(Constantes.TAG_LOG,jsonObject.toString());
 
                 transporte.setDestino_direccion(jsonObject.getString("destino_direccion").replaceAll("\n", ""));
                 transporte.setDestino_latitud(Double.valueOf(jsonObject.getString("destino_latitud")));
@@ -103,7 +103,7 @@ public class TransporteConverter {
 
             return transporte;
         } catch (JSONException ex) {
-            Log.e(Constantes.getTagLog(),ex.getMessage());
+            Log.e(Constantes.TAG_LOG,ex.getMessage());
 
             return null;
         }

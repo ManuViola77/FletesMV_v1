@@ -39,10 +39,6 @@ public class LoginActivity  extends AppCompatActivity {
 
     private RequestQueue requestQueue;
 
-    private static final String URL_LOGIN = Constantes.getUrlLogin();
-    private static final String NOMBRE = Constantes.getNOMBRE();
-    private static final String CODIGO_USUARIO = Constantes.getCodigoUsuario();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +99,7 @@ public class LoginActivity  extends AppCompatActivity {
         // Crear solicitud
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                URL_LOGIN,
+                Constantes.URL_LOGIN,
                 parameters, // datos del post
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -128,8 +124,8 @@ public class LoginActivity  extends AppCompatActivity {
 
         Procedimientos.setVariableSesionString(
                 this,
-                NOMBRE,
-                CODIGO_USUARIO,
+                Constantes.NOMBRE,
+                Constantes.CODIGO_USUARIO,
                 usuario.getName());
 
         Intent intent = new Intent(this, MainActivity.class);

@@ -23,9 +23,6 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String NOMBRE = Constantes.getNOMBRE();
-    private static final String CODIGO_USUARIO = Constantes.getCodigoUsuario();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
         // Guardo en el parámetro de Sesión el Usuario el String vacío porque ya no tengo usuario logueado.
         Procedimientos.setVariableSesionString(
                 this,
-                NOMBRE,
-                CODIGO_USUARIO,
+                Constantes.NOMBRE,
+                Constantes.CODIGO_USUARIO,
                 "");
 
         // Creo el intent de la actividad de login.

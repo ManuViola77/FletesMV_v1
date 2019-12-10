@@ -24,9 +24,6 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    private static final String NOMBRE = Constantes.getNOMBRE();
-    private static final String CODIGO_USUARIO = Constantes.getCodigoUsuario();
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -47,7 +44,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String usuarioLogueado = Procedimientos.getVariableSesionString(view.getContext(),NOMBRE,CODIGO_USUARIO);
+        String usuarioLogueado = Procedimientos.getVariableSesionString(view.getContext(),Constantes.NOMBRE,Constantes.CODIGO_USUARIO);
 
         if (usuarioLogueado.isEmpty()) {
             Intent intent = new Intent(view.getContext(), LoginActivity.class);

@@ -51,8 +51,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     private RequestQueue requestQueue;
 
-    private static String URL_TRANSPORTES = Constantes.getUrlTransportes();
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mapaViewModel =
@@ -88,7 +86,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         // Crear solicitud
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
-                URL_TRANSPORTES,
+                Constantes.URL_TRANSPORTES,
                 null, // codigo para datos del post
                 new Response.Listener<JSONArray>() {
                     @Override

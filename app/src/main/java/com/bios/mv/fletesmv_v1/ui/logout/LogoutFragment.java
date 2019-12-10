@@ -25,9 +25,6 @@ public class LogoutFragment extends Fragment {
     private LogoutViewModel logoutViewModel;
     private View root;
 
-    private static final String NOMBRE = Constantes.getNOMBRE();
-    private static final String CODIGO_USUARIO = Constantes.getCodigoUsuario();
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         logoutViewModel =
@@ -78,8 +75,8 @@ public class LogoutFragment extends Fragment {
     private void CerrarSesion() {
         Procedimientos.setVariableSesionString(
                 root.getContext(),
-                NOMBRE,
-                CODIGO_USUARIO,
+                Constantes.NOMBRE,
+                Constantes.CODIGO_USUARIO,
                 "");
 
         Intent intent = new Intent(root.getContext(), LoginActivity.class);

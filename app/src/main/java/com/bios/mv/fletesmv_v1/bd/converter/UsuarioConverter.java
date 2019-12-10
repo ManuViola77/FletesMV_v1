@@ -29,7 +29,7 @@ public class UsuarioConverter {
                 usuarios.add(usuario);
             }
         } catch (JSONException e) {
-            Log.e(Constantes.getTagLog(), e.getMessage());
+            Log.e(Constantes.TAG_LOG, e.getMessage());
         }
 
         return usuarios;
@@ -45,7 +45,7 @@ public class UsuarioConverter {
 
             return usuario;
         } catch (JSONException ex) {
-            Log.e(Constantes.getTagLog(),ex.getMessage());
+            Log.e(Constantes.TAG_LOG,ex.getMessage());
 
             return null;
         }

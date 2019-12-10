@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,14 +27,14 @@ import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 public class TransporteActivity extends AppCompatActivity {
-
-    public static final String TRANSPORTE_KEY = Constantes.getTransporteKey();
 
     private TextView titulo;
     private TextView fecha;
@@ -61,20 +62,24 @@ public class TransporteActivity extends AppCompatActivity {
 
     private Transporte transporte;
 
-    private String extra_transporte_origen_latitud = Constantes.getExtra_transporte_origen_latitud();
-    private String extra_transporte_origen_longitud = Constantes.getExtra_transporte_origen_longitud();
-    private String extra_transporte_destino_latitud = Constantes.getExtra_transporte_destino_latitud();
-    private String extra_transporte_destino_longitud = Constantes.getExtra_transporte_destino_longitud();
-    private String extra_transporte_modo = Constantes.getExtra_transporte_modo();
+    private String extra_transporte_origen_latitud = Constantes.extra_transporte_origen_latitud;
+    private String extra_transporte_origen_longitud = Constantes.extra_transporte_origen_longitud;
+    private String extra_transporte_destino_latitud = Constantes.extra_transporte_destino_latitud;
+    private String extra_transporte_destino_longitud = Constantes.extra_transporte_destino_longitud;
+    private String extra_transporte_modo = Constantes.extra_transporte_modo;
 
-    private String extra_iniciar_traslado = Constantes.getExtra_iniciar_traslado();
+    private String extra_iniciar_traslado = Constantes.extra_iniciar_traslado;
 
+    private String idTransporteString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_transporte);
+
+        // Mantengo activa la pantalla para que no tengan que estar presionando para que no se vaya.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         titulo = findViewById(R.id.transporte_info_titulo);
         fecha = findViewById(R.id.transporte_info_fecha);
@@ -104,9 +109,100 @@ public class TransporteActivity extends AppCompatActivity {
         txt_recepcion = findViewById(R.id.transporte_info_recepcion);
         recepcion_cv = findViewById(R.id.transporte_info_recepcion_cv);
 
-        String idTransporteString = getIntent().getStringExtra(TRANSPORTE_KEY);
+        idTransporteString = getIntent().getStringExtra(Constantes.TRANSPORTE_KEY);
 
-        String URL_transporte_info = Constantes.getUrlTransportes()+"/"+idTransporteString;
+        boton_iniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boton_iniciar.setEnabled(false);
+                String estado = transporte.getEstado();
+                String estadoNuevo;
+                switch (estado) {
+                    case Constantes.pendiente:
+                        // Paso de Pendiente a Iniciado pero paso por el pedido de los datos del vehiculo
+                        iniciarTraslado(view);
+                        break;
+
+                    case Constantes.iniciado:
+                        // Paso de iniciado a cargando
+                        estadoNuevo = "cargando";
+                        cambiarEstadoTraslado(view, estadoNuevo);
+                        break;
+
+                    case Constantes.cargando:
+                        // Paso de cargando a viajando
+                        estadoNuevo = "viajando";
+                        cambiarEstadoTraslado(view, estadoNuevo);
+                        break;
+
+                    case Constantes.viajando:
+                        // Paso de viajando a descargando
+                        estadoNuevo = "descargando";
+                        cambiarEstadoTraslado(view, estadoNuevo);
+                        break;
+
+                    case Constantes.descargando:
+                        // Paso de descargando a finalizado pero paso por el pedido de los datos de la recepcion
+                        estadoNuevo = "finalizado";
+                        cambiarEstadoTraslado(view, estadoNuevo);
+                        break;
+
+                    case Constantes.finalizado:
+                        // En este estado no pasa nada. El botón ni siquiera está visible.
+                        break;
+                }
+            }
+        });
+    }
+
+    private void iniciarTraslado(View view){
+        Intent intent = new Intent(view.getContext(), IniciarTrasladoActivity.class);
+        intent.putExtra(extra_iniciar_traslado,transporte.getId());
+        startActivity(intent);
+    }
+
+    private void cambiarEstadoTraslado(View view, String estado){
+        String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+transporte.getId();
+
+        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+
+        Map<String, String> params = new HashMap();
+        params.put("estado", estado);
+        JSONObject parameters = new JSONObject(params);
+
+        JsonObjectRequest solicitud = new JsonObjectRequest(
+                Request.Method.POST,
+                URL_transporte_info,
+                parameters,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        manejarRespuestaCambiarEstado(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        manejarErrorCambiarEstado(error);
+                    }
+                }
+        );
+
+        requestQueue.add(solicitud);
+    }
+
+    private void manejarErrorCambiarEstado(VolleyError error) {
+        Log.e(Constantes.TAG_LOG,"error "+error.getMessage(),error);
+        Toast.makeText(this,"Error cambiando de estado el traslado",Toast.LENGTH_LONG).show();
+    }
+
+    private void manejarRespuestaCambiarEstado(JSONObject respuesta) {
+        requestTraslado();
+    }
+
+    private void requestTraslado() {
+
+        String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTransporteString;
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -130,20 +226,11 @@ public class TransporteActivity extends AppCompatActivity {
         );
 
         requestQueue.add(solicitud);
-
-        boton_iniciar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), IniciarTrasladoActivity.class);
-                intent.putExtra(extra_iniciar_traslado,transporte.getId());
-                startActivity(intent);
-            }
-        });
     }
 
     private void manejarError(VolleyError error) {
-        Log.e(Constantes.getTagLog(),error.getMessage());
-        Toast.makeText(this,"Error obteniendo datos del transporte",Toast.LENGTH_LONG).show();
+        Log.e(Constantes.TAG_LOG,error.getMessage());
+        Toast.makeText(this,"Error obteniendo datos del traslado",Toast.LENGTH_LONG).show();
 
         finish();
     }
@@ -196,11 +283,42 @@ public class TransporteActivity extends AppCompatActivity {
 
             transporte_cv.setVisibility(View.VISIBLE);
 
-            if (transporte.getEstado().equals("pendiente")) {
-                boton_iniciar.setVisibility(View.VISIBLE);
-            } else {
-                boton_iniciar.setVisibility(View.GONE);
+            switch (transporte.getEstado()) {
+                case Constantes.pendiente:
+                    boton_iniciar.setVisibility(View.VISIBLE);
+                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_iniciar));
+                    boton_iniciar.setEnabled(true);
+                    break;
+
+                case Constantes.iniciado:
+                    boton_iniciar.setVisibility(View.VISIBLE);
+                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_cargar));
+                    boton_iniciar.setEnabled(true);
+                    break;
+
+                case Constantes.cargando:
+                    boton_iniciar.setVisibility(View.VISIBLE);
+                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_viajar));
+                    boton_iniciar.setEnabled(true);
+                    break;
+
+                case Constantes.viajando:
+                    boton_iniciar.setVisibility(View.VISIBLE);
+                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_descargar));
+                    boton_iniciar.setEnabled(true);
+                    break;
+
+                case Constantes.descargando:
+                    boton_iniciar.setVisibility(View.VISIBLE);
+                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_finalizar));
+                    boton_iniciar.setEnabled(true);
+                    break;
+
+                case Constantes.finalizado:
+                    boton_iniciar.setVisibility(View.GONE);
+                    break;
             }
+
         } else
             titulo.setText("Fallo en el convertidor de Transporte, retornó NULL");
     }
@@ -224,9 +342,11 @@ public class TransporteActivity extends AppCompatActivity {
         intent.putExtra(extra_transporte_modo,modo);
         startActivity(intent);
     }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        requestTraslado();
+    }
 }

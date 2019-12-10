@@ -44,8 +44,6 @@ public class TransporteFragment extends Fragment {
     private RequestQueue requestQueue;
     private TransporteAdapter transporteAdapter;
 
-    private static String URL_TRANSPORTES = Constantes.getUrlTransportes();
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         transporteViewModel =
@@ -81,13 +79,17 @@ public class TransporteFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.VERTICAL, false));
         rv.setItemAnimator(new DefaultItemAnimator());
 
+        requestTraslados();
+    }
+
+    private void requestTraslados() {
         // Inicializo cola de solicitudes
         requestQueue = Volley.newRequestQueue(root.getContext());
 
         // Crear solicitud
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
-                URL_TRANSPORTES,
+                Constantes.URL_TRANSPORTES,
                 null, // codigo para datos del post
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -106,11 +108,18 @@ public class TransporteFragment extends Fragment {
         requestQueue.add(request);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        requestTraslados();
+    }
+
     private void manejarTransporteSelecionado(Transporte transporte) {
         // cuando selecciono un traslado abro la actividad de transporte mediante un intent
         // para saber el transporte seleccionado le mando el id del transporte como dato extra al intent
         Intent intent = new Intent(root.getContext(),TransporteActivity.class);
-        intent.putExtra(TransporteActivity.TRANSPORTE_KEY,Integer.toString(transporte.getId()));
+        intent.putExtra(Constantes.TRANSPORTE_KEY,Integer.toString(transporte.getId()));
         startActivity(intent);
     }
 

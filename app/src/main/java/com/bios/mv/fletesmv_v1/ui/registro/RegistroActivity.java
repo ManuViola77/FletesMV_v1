@@ -37,10 +37,6 @@ public class RegistroActivity extends AppCompatActivity {
 
     private Button boton_confirmar_registro;
 
-    private static final String URL_REGISTRO = Constantes.getUrlRegistro();
-    private static final String NOMBRE = Constantes.getNOMBRE();
-    private static final String CODIGO_USUARIO = Constantes.getCodigoUsuario();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +79,7 @@ public class RegistroActivity extends AppCompatActivity {
                 // Crear solicitud
                 JsonObjectRequest request = new JsonObjectRequest(
                         Request.Method.POST,
-                        URL_REGISTRO,
+                        Constantes.URL_REGISTRO,
                         parameters, // datos del post
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -110,8 +106,8 @@ public class RegistroActivity extends AppCompatActivity {
 
         Procedimientos.setVariableSesionString(
                 this,
-                NOMBRE,
-                CODIGO_USUARIO,
+                Constantes.NOMBRE,
+                Constantes.CODIGO_USUARIO,
                 usuario.getName());
 
         Intent intent = new Intent(this, MainActivity.class);

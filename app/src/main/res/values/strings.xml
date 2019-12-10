@@ -50,4 +50,8 @@
     <string name="iniciar_traslado_titulo">Iniciar Traslado %s</string>
     <string name="texto_iniciar_traslado">Por favor, ingrese los datos del vehículo del traslado.</string>
     <string name="iniciar_traslado_boton_iniciar">Confirmar</string>
+    <string name="transporte_info_boton_cargar">Cargar</string>
+    <string name="transporte_info_boton_viajar">Viajar</string>
+    <string name="transporte_info_boton_descargar">Descargar</string>
+    <string name="transporte_info_boton_finalizar">Finalizar</string>
 </resources>

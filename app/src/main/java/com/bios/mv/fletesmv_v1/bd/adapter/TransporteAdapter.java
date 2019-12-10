@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bios.mv.fletesmv_v1.R;
+import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Transporte;
 
 import java.util.ArrayList;
@@ -57,27 +58,27 @@ public class TransporteAdapter extends
 
         int color = 0;
         switch (transporte.getEstado()) {
-            case "pendiente":
+            case Constantes.pendiente:
                 color = holder.itemView.getResources().getColor(R.color.estado_pendiente);
                 break;
 
-            case "iniciado":
+            case Constantes.iniciado:
                 color = holder.itemView.getResources().getColor(R.color.estado_iniciado);
                 break;
 
-            case "cargando":
+            case Constantes.cargando:
                 color = holder.itemView.getResources().getColor(R.color.estado_cargando);
                 break;
 
-            case "viajando":
+            case Constantes.viajando:
                 color = holder.itemView.getResources().getColor(R.color.estado_viajando);
                 break;
 
-            case "descargado":
+            case Constantes.descargando:
                 color = holder.itemView.getResources().getColor(R.color.estado_descargado);
                 break;
 
-            case "finalizado":
+            case Constantes.finalizado:
                 color = holder.itemView.getResources().getColor(R.color.estado_finalizado);
                 break;
 
