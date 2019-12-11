@@ -2,6 +2,8 @@ package com.bios.mv.fletesmv_v1.ui.transporte;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,15 +26,31 @@ import com.bios.mv.fletesmv_v1.bd.Transporte;
 import com.bios.mv.fletesmv_v1.bd.Vehiculo;
 import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 
+
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 
 public class TransporteActivity extends AppCompatActivity {
 
@@ -62,16 +80,12 @@ public class TransporteActivity extends AppCompatActivity {
 
     private Transporte transporte;
 
-    private String extra_transporte_origen_latitud = Constantes.extra_transporte_origen_latitud;
-    private String extra_transporte_origen_longitud = Constantes.extra_transporte_origen_longitud;
-    private String extra_transporte_destino_latitud = Constantes.extra_transporte_destino_latitud;
-    private String extra_transporte_destino_longitud = Constantes.extra_transporte_destino_longitud;
-    private String extra_transporte_modo = Constantes.extra_transporte_modo;
-
-    private String extra_iniciar_traslado = Constantes.extra_iniciar_traslado;
-    private String extra_finalizar_traslado = Constantes.extra_finalizar_traslado;
-
     private String idTransporteString;
+
+    private FusedLocationProviderClient flpClient;
+
+    private double ultimaLongitud;
+    private double ultimaLatitud;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,17 +167,18 @@ public class TransporteActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void finalizarTraslado(View view) {
         Intent intent = new Intent(view.getContext(), FinalizarTrasladoActivity.class);
-        intent.putExtra(extra_finalizar_traslado,transporte.getId());
+        intent.putExtra(Constantes.extra_finalizar_traslado,transporte.getId());
         startActivity(intent);
     }
 
     private void iniciarTraslado(View view){
         Intent intent = new Intent(view.getContext(), IniciarTrasladoActivity.class);
-        intent.putExtra(extra_iniciar_traslado,transporte.getId());
+        intent.putExtra(Constantes.extra_iniciar_traslado,transporte.getId());
         startActivity(intent);
     }
 
@@ -289,44 +304,96 @@ public class TransporteActivity extends AppCompatActivity {
 
             transporte_cv.setVisibility(View.VISIBLE);
 
-            switch (transporte.getEstado()) {
-                case Constantes.pendiente:
-                    boton_iniciar.setVisibility(View.VISIBLE);
-                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_iniciar));
-                    boton_iniciar.setEnabled(true);
-                    break;
-
-                case Constantes.iniciado:
-                    boton_iniciar.setVisibility(View.VISIBLE);
-                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_cargar));
-                    boton_iniciar.setEnabled(true);
-                    break;
-
-                case Constantes.cargando:
-                    boton_iniciar.setVisibility(View.VISIBLE);
-                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_viajar));
-                    boton_iniciar.setEnabled(true);
-                    break;
-
-                case Constantes.viajando:
-                    boton_iniciar.setVisibility(View.VISIBLE);
-                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_descargar));
-                    boton_iniciar.setEnabled(true);
-                    break;
-
-                case Constantes.descargando:
-                    boton_iniciar.setVisibility(View.VISIBLE);
-                    boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_finalizar));
-                    boton_iniciar.setEnabled(true);
-                    break;
-
-                case Constantes.finalizado:
-                    boton_iniciar.setVisibility(View.GONE);
-                    break;
-            }
+            personalizacionSegunEstado();
 
         } else
             titulo.setText("Fallo en el convertidor de Transporte, retornó NULL");
+    }
+
+    private void personalizacionSegunEstado(){
+
+        switch (transporte.getEstado()) {
+            case Constantes.pendiente:
+                boton_iniciar.setVisibility(View.VISIBLE);
+                boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_iniciar));
+                boton_iniciar.setEnabled(true);
+                break;
+
+            case Constantes.iniciado:
+                boton_iniciar.setVisibility(View.VISIBLE);
+                boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_cargar));
+                boton_iniciar.setEnabled(true);
+
+                setearGPS();
+                break;
+
+            case Constantes.cargando:
+                boton_iniciar.setVisibility(View.VISIBLE);
+                boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_viajar));
+                boton_iniciar.setEnabled(true);
+                break;
+
+            case Constantes.viajando:
+                boton_iniciar.setVisibility(View.VISIBLE);
+                boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_descargar));
+                boton_iniciar.setEnabled(true);
+
+                setearGPS();
+                break;
+
+            case Constantes.descargando:
+                boton_iniciar.setVisibility(View.VISIBLE);
+                boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_finalizar));
+                boton_iniciar.setEnabled(true);
+                break;
+
+            case Constantes.finalizado:
+                boton_iniciar.setVisibility(View.GONE);
+                break;
+        }
+
+    }
+
+    private void setearGPS() {
+        // **************************************
+        // Obtener localización GPS del telefono
+        // **************************************
+
+        flpClient = LocationServices.getFusedLocationProviderClient(this);
+
+        Task<Location> lastLocationTask = flpClient.getLastLocation();
+
+        lastLocationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    obtenerLocalizacion(location);
+                } else {
+
+                }
+            }
+        });
+
+        lastLocationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(Constantes.TAG_LOG,"error: "+e.getMessage());
+            }
+        });
+
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        flpClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+        // **************************************
+        // Fin de obtener localización GPS del telefono
+        // **************************************
+    }
+
+    private void pararGPS() {
+        flpClient.removeLocationUpdates(locationCallback);
     }
 
 
@@ -341,11 +408,11 @@ public class TransporteActivity extends AppCompatActivity {
 
     private void abrirMapa(String modo) {
         Intent intent = new Intent(this, MapaTransporteActivity.class);
-        intent.putExtra(extra_transporte_origen_latitud,transporte.getOrigen_latitud());
-        intent.putExtra(extra_transporte_origen_longitud,transporte.getOrigen_longitud());
-        intent.putExtra(extra_transporte_destino_latitud,transporte.getDestino_latitud());
-        intent.putExtra(extra_transporte_destino_longitud,transporte.getDestino_longitud());
-        intent.putExtra(extra_transporte_modo,modo);
+        intent.putExtra(Constantes.extra_transporte_origen_latitud,transporte.getOrigen_latitud());
+        intent.putExtra(Constantes.extra_transporte_origen_longitud,transporte.getOrigen_longitud());
+        intent.putExtra(Constantes.extra_transporte_destino_latitud,transporte.getDestino_latitud());
+        intent.putExtra(Constantes.extra_transporte_destino_longitud,transporte.getDestino_longitud());
+        intent.putExtra(Constantes.extra_transporte_modo,modo);
         startActivity(intent);
     }
 
@@ -355,4 +422,55 @@ public class TransporteActivity extends AppCompatActivity {
 
         requestTraslado();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (transporte.getEstado() == Constantes.iniciado || transporte.getEstado() == Constantes.viajando) {
+            pararGPS();
+        }
+    }
+
+    public LocationCallback locationCallback = new LocationCallback()  {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            //super.onLocationResult(locationResult);
+
+            List<Location> locations = locationResult.getLocations();
+
+            for (Location location : locations) {
+                String fecha = Procedimientos.getFechaActual();
+
+                ultimaLongitud = location.getLongitude();
+                ultimaLatitud = location.getLatitude();
+
+                String texto = String.format("\n\n--ACTUALIZO\n\nLat:%s\nLon:%s\nFecha:%s",
+                        ultimaLatitud,
+                        ultimaLongitud,
+                        fecha);
+
+                Log.i(Constantes.TAG_LOG,"En onLocationResult: "+texto);
+            }
+
+        }
+    };
+
+
+    private void obtenerLocalizacion(Location location) {
+        Date date = new Date(location.getTime());
+
+        String fecha = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date);
+
+        ultimaLongitud = location.getLongitude();
+        ultimaLatitud = location.getLatitude();
+
+        String texto = String.format("\n\n--KNOWN\n\nLat:%s\nLon:%s\nFecha:%s",
+                ultimaLatitud,
+                ultimaLongitud,
+                fecha);
+
+        Log.i(Constantes.TAG_LOG,"En obtenerLocalizacion: "+texto);
+    }
+
 }
