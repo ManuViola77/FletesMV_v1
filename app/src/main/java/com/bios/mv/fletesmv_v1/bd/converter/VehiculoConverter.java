@@ -14,7 +14,7 @@ public class VehiculoConverter {
 
     public static JSONObject convertVehiculoToJSONOBject(Vehiculo vehiculo) {
         Map<String, String> params = new HashMap();
-        params.put("estado", "iniciado");
+        params.put("estado", Constantes.iniciado);
         params.put("vehiculo_marca", vehiculo.getMarca());
         params.put("vehiculo_modelo", vehiculo.getModelo());
         params.put("vehiculo_matricula", vehiculo.getMatricula());

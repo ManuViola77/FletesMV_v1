@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,12 +45,15 @@ public class Procedimientos {
         Locale locale = new Locale("spa", "URY");
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
 
-       // SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
         String fechaFormateada = dateFormat.format(date);
 
         return fechaFormateada;
 
     }
 
+    public static String getFechaActual() {
+
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
+
+    }
 }

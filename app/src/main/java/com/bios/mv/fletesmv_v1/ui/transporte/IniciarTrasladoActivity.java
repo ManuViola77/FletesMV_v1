@@ -107,8 +107,8 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
     }
 
     private void manejarError(VolleyError error) {
-        Log.e(Constantes.TAG_LOG,error.getMessage());
-        Toast.makeText(this,"Error obteniendo datos del transporte",Toast.LENGTH_LONG).show();
+        Log.e(Constantes.TAG_LOG,"error: "+error.getMessage());
+        Toast.makeText(this,"Error guardando datos del transporte",Toast.LENGTH_LONG).show();
 
         finish();
     }

@@ -69,6 +69,7 @@ public class TransporteActivity extends AppCompatActivity {
     private String extra_transporte_modo = Constantes.extra_transporte_modo;
 
     private String extra_iniciar_traslado = Constantes.extra_iniciar_traslado;
+    private String extra_finalizar_traslado = Constantes.extra_finalizar_traslado;
 
     private String idTransporteString;
 
@@ -143,8 +144,7 @@ public class TransporteActivity extends AppCompatActivity {
 
                     case Constantes.descargando:
                         // Paso de descargando a finalizado pero paso por el pedido de los datos de la recepcion
-                        estadoNuevo = "finalizado";
-                        cambiarEstadoTraslado(view, estadoNuevo);
+                        finalizarTraslado(view);
                         break;
 
                     case Constantes.finalizado:
@@ -153,6 +153,12 @@ public class TransporteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void finalizarTraslado(View view) {
+        Intent intent = new Intent(view.getContext(), FinalizarTrasladoActivity.class);
+        intent.putExtra(extra_finalizar_traslado,transporte.getId());
+        startActivity(intent);
     }
 
     private void iniciarTraslado(View view){

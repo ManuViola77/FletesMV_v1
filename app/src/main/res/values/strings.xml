@@ -55,4 +55,9 @@
     <string name="transporte_info_boton_descargar">Descargar</string>
     <string name="transporte_info_boton_finalizar">Finalizar</string>
     <string name="title_finalizar_traslado">Confirmación de traslado finalizado</string>
+    <string name="finalizar_traslado_boton_finalizar">Confirmar</string>
+    <string name="finalizar_traslado_titulo">Finalizar Traslado %s</string>
+    <string name="texto_finalizar_traslado">Por favor, ingrese los datos de la recepción.</string>
+    <string name="finalizar_traslado_hint_nombre_receptor">Ingresar Nombre del Receptor</string>
+    <string name="finalizar_traslado_hint_observacion">Ingresar Observación</string>
 </resources>

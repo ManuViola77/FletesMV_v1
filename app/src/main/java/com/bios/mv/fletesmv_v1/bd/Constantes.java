@@ -30,6 +30,7 @@ public class Constantes {
     public static final String extra_transporte_modo = "com.bios.mv.fletesmv_v1.extra_transporte_modo";
 
     public static final String extra_iniciar_traslado = "com.bios.mv.fletesmv_v1.extra_iniciar_traslado";
+    public static final String extra_finalizar_traslado = "com.bios.mv.fletesmv_v1.extra_finalizar_traslado";
 
     public static final String pendiente = "pendiente";
     public static final String iniciado = "iniciado";
