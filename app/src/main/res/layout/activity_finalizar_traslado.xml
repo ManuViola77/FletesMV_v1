@@ -30,13 +30,14 @@
         android:layout_margin="16dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:errorTextAppearance="@style/texto_error">
+        app:errorTextAppearance="@style/texto_error"
+        app:hintTextAppearance="@style/TextoHint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/finalizar_traslado_hint_nombre_receptor" />
+            android:hint="@string/finalizar_traslado_hint_nombre_receptor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,12 +48,13 @@
         android:layout_margin="16dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:errorTextAppearance="@style/texto_error">
+        app:errorTextAppearance="@style/texto_error"
+        app:hintTextAppearance="@style/TextoHint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/finalizar_traslado_hint_observacion" />
+            android:hint="@string/finalizar_traslado_hint_observacion"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

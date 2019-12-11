@@ -9,7 +9,7 @@
     <color name="lila_claro">#8E6999</color>
 
     <color name="blanco">#FFFFFF</color>
-
+    <color name="negro">#000000</color>
 
     <color name="estado_pendiente">#ffd0ca</color>
     <color name="estado_iniciado">#ffd2e6</color>
