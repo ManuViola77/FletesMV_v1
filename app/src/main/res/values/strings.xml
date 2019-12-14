@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FletesMV</string>
     <string name="title_home">Bienvenida</string>
-    <string name="title_dashboard">Transportes</string>
+    <string name="title_dashboard">Traslados</string>
     <string name="title_notifications">Mapa</string>
 
     <string name="action_login">Iniciar Sesión</string>
@@ -44,6 +44,7 @@
     <string name="title_transporte_recepcion_observacion">Observación</string>
     <string name="title_transporte_recepcion_fecha">Fecha</string>
     <string name="title_mapa_transporte">Mapa Traslado</string>
+    <string name="title_mapa_transporte_con_id">Traslado %s - %s</string>
     <string name="transportes_iniciar">Iniciar Traslado</string>
     <string name="transporte_info_boton_iniciar">Iniciar</string>
     <string name="title_iniciar_traslado">Iniciar Traslado</string>

@@ -24,10 +24,7 @@ public class Constantes {
     public static final String conf_dias_noti_key = "conf_dias_noti";
     public static final String conf_dias_noti_defecto = "1";
 
-    public static final String extra_transporte_origen_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_origen_latitud";
-    public static final String extra_transporte_origen_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_origen_longitud";
-    public static final String extra_transporte_destino_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_latitud";
-    public static final String extra_transporte_destino_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_longitud";
+    public static final String extra_transporte_traslado_string = "com.bios.mv.fletesmv_v1.extra_transporte_traslado_string";
     public static final String extra_transporte_ultima_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_ultima_latitud";
     public static final String extra_transporte_ultima_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_ultima_longitud";
     public static final String extra_transporte_modo = "com.bios.mv.fletesmv_v1.extra_transporte_modo";
@@ -41,5 +38,6 @@ public class Constantes {
     public static final String viajando = "viajando";
     public static final String descargando = "descargando";
     public static final String finalizado = "finalizado";
+
 
 }

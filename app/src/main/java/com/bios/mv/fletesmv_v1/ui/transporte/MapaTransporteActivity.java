@@ -1,6 +1,7 @@
 package com.bios.mv.fletesmv_v1.ui.transporte;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -9,6 +10,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
+import com.bios.mv.fletesmv_v1.bd.Transporte;
+import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,8 +25,10 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
 
     private GoogleMap mapa_transporte_info;
 
+    private String origen_direccion;
     private double origen_latitud;
     private double origen_longitud;
+    private String destino_direccion;
     private double destino_latitud;
     private double destino_longitud;
     private double latitud_actual;
@@ -41,13 +46,24 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            origen_latitud   = extras.getDouble(Constantes.extra_transporte_origen_latitud);
-            origen_longitud  = extras.getDouble(Constantes.extra_transporte_origen_longitud);
-            destino_latitud  = extras.getDouble(Constantes.extra_transporte_destino_latitud);
-            destino_longitud = extras.getDouble(Constantes.extra_transporte_destino_longitud);
-            latitud_actual   = extras.getDouble(Constantes.extra_transporte_ultima_latitud);
-            longitud_actual  = extras.getDouble(Constantes.extra_transporte_ultima_longitud);
+            String traslado_string = extras.getString(Constantes.extra_transporte_traslado_string);
+
+            Transporte transporte = TransporteConverter.stringToTransporte(traslado_string);
+
+            origen_direccion  = transporte.getOrigen_direccion().replaceAll(",", ",\n");
+            origen_latitud    = transporte.getOrigen_latitud();
+            origen_longitud   = transporte.getOrigen_longitud();
+            destino_direccion = transporte.getDestino_direccion().replaceAll(",", ",\n");
+            destino_latitud   = transporte.getDestino_latitud();
+            destino_longitud  = transporte.getDestino_longitud();
+            latitud_actual    = extras.getDouble(Constantes.extra_transporte_ultima_latitud);
+            longitud_actual   = extras.getDouble(Constantes.extra_transporte_ultima_longitud);
             modo = extras.getString(Constantes.extra_transporte_modo);
+
+            setTitle(String.format(
+                    getResources().getString(R.string.title_mapa_transporte_con_id),
+                    Integer.toString(transporte.getId()),
+                    transporte.getEstado()));
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -78,8 +94,8 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
         MarkerOptions marker = new MarkerOptions();
         marker.position(lugarEnMapa);
         marker.title("Origen");
-        marker.snippet("Population: 776733");
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        marker.snippet(origen_direccion);
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         if (modo.equals("Origen")) {
 
@@ -96,7 +112,8 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
         marker = new MarkerOptions();
         marker.position(lugarEnMapa);
         marker.title("Destino");
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        marker.snippet(destino_direccion);
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
         if (modo.equals("Destino")){
             mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));

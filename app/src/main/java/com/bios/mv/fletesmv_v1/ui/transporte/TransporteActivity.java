@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
@@ -399,13 +400,13 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void pararGPS() {
-        flpClient.removeLocationUpdates(locationCallback);
+        if (flpClient != null)
+            flpClient.removeLocationUpdates(locationCallback);
     }
 
 
     public void abrirMapaEnOrigen(View view) {
         abrirMapa("Origen");
-
     }
 
     public void abrirMapaEnDestino(View view) {
@@ -413,11 +414,11 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void abrirMapa(String modo) {
+
+        String trasladoString = transporte.toString();
+
         Intent intent = new Intent(this, MapaTransporteActivity.class);
-        intent.putExtra(Constantes.extra_transporte_origen_latitud,transporte.getOrigen_latitud());
-        intent.putExtra(Constantes.extra_transporte_origen_longitud,transporte.getOrigen_longitud());
-        intent.putExtra(Constantes.extra_transporte_destino_latitud,transporte.getDestino_latitud());
-        intent.putExtra(Constantes.extra_transporte_destino_longitud,transporte.getDestino_longitud());
+        intent.putExtra(Constantes.extra_transporte_traslado_string,trasladoString);
         intent.putExtra(Constantes.extra_transporte_ultima_latitud,ultimaLatitud);
         intent.putExtra(Constantes.extra_transporte_ultima_longitud,ultimaLongitud);
         intent.putExtra(Constantes.extra_transporte_modo,modo);
@@ -447,8 +448,10 @@ public class TransporteActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
-            pararGPS();
+        if (transporte != null) {
+            if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
+                pararGPS();
+            }
         }
     }
 

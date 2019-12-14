@@ -1,5 +1,9 @@
 package com.bios.mv.fletesmv_v1.bd;
 
+import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
+
+import org.json.JSONObject;
+
 public class Transporte implements Comparable<Transporte>{
 
     private int id;
@@ -113,5 +117,9 @@ public class Transporte implements Comparable<Transporte>{
             return 1;
         }
         return 0;
+    }
+
+    public String toString(){
+        return TransporteConverter.convertTransporteToJSONOBject(this).toString();
     }
 }
