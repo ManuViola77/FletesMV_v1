@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/lila</item>
         <item name="colorPrimaryDark">@color/violeta</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/claro</item>
     </style>
 
     <style name="Boton">

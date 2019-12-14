@@ -90,7 +90,7 @@ public class TransporteActivity extends AppCompatActivity {
     private double ultimaLongitud = 0;
     private double ultimaLatitud  = 0;
 
-    private List<Location> ubicaciones = new ArrayList<>();
+    //private List<Location> ubicaciones = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -384,7 +384,7 @@ public class TransporteActivity extends AppCompatActivity {
         lastLocationTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(Constantes.TAG_LOG,"error: "+e.getMessage());
+                Log.e(Constantes.TAG_LOG,"TransporteActivity, addOnFailureListener, error: "+e.getMessage());
             }
         });
 
@@ -470,7 +470,7 @@ public class TransporteActivity extends AppCompatActivity {
                     ultimaLongitud = location.getLongitude();
                     ultimaLatitud = location.getLatitude();
 
-                    ubicaciones.add(location);
+                    //ubicaciones.add(location);
 
                     Procedimientos.InvocarServicios.mandarUbicacion(contexto,transporte.getId(),ultimaLatitud,ultimaLongitud);
                 }
@@ -495,7 +495,7 @@ public class TransporteActivity extends AppCompatActivity {
         ultimaLongitud = location.getLongitude();
         ultimaLatitud = location.getLatitude();
 
-        ubicaciones.add(location);
+        //ubicaciones.add(location);
 
         String texto = String.format("\n\n--KNOWN\n\nLat:%s\nLon:%s\nFecha:%s",
                 ultimaLatitud,

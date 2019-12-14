@@ -10,7 +10,7 @@ public class TransporteViewModel  extends ViewModel {
 
     public TransporteViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Lisado de Traslados");
+        mText.setValue("Traslados");
     }
 
     public LiveData<String> getText() {
