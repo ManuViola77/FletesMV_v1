@@ -2,7 +2,6 @@ package com.bios.mv.fletesmv_v1.ui.transporte;
 
 import android.content.Intent;
 import android.graphics.Paint;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
@@ -31,10 +31,10 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -84,8 +84,10 @@ public class TransporteActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient flpClient;
 
-    private double ultimaLongitud;
-    private double ultimaLatitud;
+    private double ultimaLongitud = 0;
+    private double ultimaLatitud  = 0;
+
+    private List<Location> ubicaciones = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,7 +185,7 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void cambiarEstadoTraslado(View view, String estado){
-        String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+transporte.getId();
+        String URL_transporte_cambiar_estado = Constantes.URL_TRANSPORTES+"/"+transporte.getId();
 
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
@@ -193,7 +195,7 @@ public class TransporteActivity extends AppCompatActivity {
 
         JsonObjectRequest solicitud = new JsonObjectRequest(
                 Request.Method.POST,
-                URL_transporte_info,
+                URL_transporte_cambiar_estado,
                 parameters,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -213,7 +215,7 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void manejarErrorCambiarEstado(VolleyError error) {
-        Log.e(Constantes.TAG_LOG,"error "+error.getMessage(),error);
+        Log.e(Constantes.TAG_LOG,"error cambiando de estado el traslado "+error.getMessage(),error);
         Toast.makeText(this,"Error cambiando de estado el traslado",Toast.LENGTH_LONG).show();
     }
 
@@ -412,6 +414,8 @@ public class TransporteActivity extends AppCompatActivity {
         intent.putExtra(Constantes.extra_transporte_origen_longitud,transporte.getOrigen_longitud());
         intent.putExtra(Constantes.extra_transporte_destino_latitud,transporte.getDestino_latitud());
         intent.putExtra(Constantes.extra_transporte_destino_longitud,transporte.getDestino_longitud());
+        intent.putExtra(Constantes.extra_transporte_ultima_latitud,ultimaLatitud);
+        intent.putExtra(Constantes.extra_transporte_ultima_longitud,ultimaLongitud);
         intent.putExtra(Constantes.extra_transporte_modo,modo);
         startActivity(intent);
     }
@@ -427,7 +431,17 @@ public class TransporteActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (transporte.getEstado() == Constantes.iniciado || transporte.getEstado() == Constantes.viajando) {
+        if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
+            pararGPS();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
             pararGPS();
         }
     }
@@ -442,8 +456,15 @@ public class TransporteActivity extends AppCompatActivity {
             for (Location location : locations) {
                 String fecha = Procedimientos.getFechaActual();
 
-                ultimaLongitud = location.getLongitude();
-                ultimaLatitud = location.getLatitude();
+                if ((location.getLongitude() != Math.round(ultimaLongitud)) || (location.getLatitude() != ultimaLatitud)) {
+                    // cambio la ubicacion entonces actualizo y mando
+                    ultimaLongitud = location.getLongitude();
+                    ultimaLatitud = location.getLatitude();
+
+                    ubicaciones.add(location);
+
+                    mandarUbicacion();
+                }
 
                 String texto = String.format("\n\n--ACTUALIZO\n\nLat:%s\nLon:%s\nFecha:%s",
                         ultimaLatitud,
@@ -465,12 +486,57 @@ public class TransporteActivity extends AppCompatActivity {
         ultimaLongitud = location.getLongitude();
         ultimaLatitud = location.getLatitude();
 
+        ubicaciones.add(location);
+
         String texto = String.format("\n\n--KNOWN\n\nLat:%s\nLon:%s\nFecha:%s",
                 ultimaLatitud,
                 ultimaLongitud,
                 fecha);
 
         Log.i(Constantes.TAG_LOG,"En obtenerLocalizacion: "+texto);
+    }
+
+    private void mandarUbicacion() {
+        String URL_transporte_gps = Constantes.URL_GPS+"/"+transporte.getId()+"/location";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        Map<String, String> params = new HashMap();
+        params.put("latitud", Double.toString(ultimaLatitud));
+        params.put("longitud", Double.toString(ultimaLongitud));
+        JSONObject parameters = new JSONObject(params);
+
+        Log.i(Constantes.TAG_LOG,"mandando mi ubicacion actual con params: "+parameters);
+        Log.i(Constantes.TAG_LOG,"URL_transporte_gps: "+URL_transporte_gps);
+
+        JsonObjectRequest solicitud = new JsonObjectRequest(
+                Request.Method.POST,
+                URL_transporte_gps,
+                parameters,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        manejarRespuestaMandarUbicacion(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        manejarErrorMandarUbicacion(error);
+                    }
+                }
+        );
+
+        requestQueue.add(solicitud);
+    }
+
+    private void manejarErrorMandarUbicacion(VolleyError error) {
+        Log.e(Constantes.TAG_LOG,"error mandando ubicacion: "+error.getMessage());
+        Toast.makeText(this,"Error mandando ubicación",Toast.LENGTH_LONG).show();
+    }
+
+    private void manejarRespuestaMandarUbicacion(JSONObject response) {
+        Log.i(Constantes.TAG_LOG,"Usted está en: "+ultimaLatitud + ": "+ultimaLongitud);
     }
 
 }

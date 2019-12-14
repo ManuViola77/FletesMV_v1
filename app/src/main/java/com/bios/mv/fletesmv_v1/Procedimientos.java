@@ -56,4 +56,12 @@ public class Procedimientos {
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
 
     }
+
+    public class InvocarServicios {
+
+        public void mandarUbicacion() {
+
+        }
+
+    }
 }

@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -25,6 +26,8 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
     private double origen_longitud;
     private double destino_latitud;
     private double destino_longitud;
+    private double latitud_actual;
+    private double longitud_actual;
     private String modo;
 
     @Override
@@ -38,10 +41,12 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            origen_latitud = extras.getDouble(Constantes.extra_transporte_origen_latitud);
-            origen_longitud = extras.getDouble(Constantes.extra_transporte_origen_longitud);
-            destino_latitud = extras.getDouble(Constantes.extra_transporte_destino_latitud);
+            origen_latitud   = extras.getDouble(Constantes.extra_transporte_origen_latitud);
+            origen_longitud  = extras.getDouble(Constantes.extra_transporte_origen_longitud);
+            destino_latitud  = extras.getDouble(Constantes.extra_transporte_destino_latitud);
             destino_longitud = extras.getDouble(Constantes.extra_transporte_destino_longitud);
+            latitud_actual   = extras.getDouble(Constantes.extra_transporte_ultima_latitud);
+            longitud_actual  = extras.getDouble(Constantes.extra_transporte_ultima_longitud);
             modo = extras.getString(Constantes.extra_transporte_modo);
         }
 
@@ -73,21 +78,42 @@ public class MapaTransporteActivity extends AppCompatActivity implements OnMapRe
         MarkerOptions marker = new MarkerOptions();
         marker.position(lugarEnMapa);
         marker.title("Origen");
+        marker.snippet("Population: 776733");
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
 
-        mapa_transporte_info.addMarker(marker).showInfoWindow();
+        if (modo.equals("Origen")) {
 
-        if (modo.equals("Origen"))
-            mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));
+            mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa, 20));
+            mapa_transporte_info.addMarker(marker).showInfoWindow();
+        } else {
+            mapa_transporte_info.addMarker(marker);
+        }
+
+
 
         lugarEnMapa = new LatLng(destino_latitud, destino_longitud);
 
         marker = new MarkerOptions();
         marker.position(lugarEnMapa);
         marker.title("Destino");
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
 
-        mapa_transporte_info.addMarker(marker).showInfoWindow();
-
-        if (modo.equals("Destino"))
+        if (modo.equals("Destino")){
             mapa_transporte_info.animateCamera(CameraUpdateFactory.newLatLngZoom(lugarEnMapa,20));
+            mapa_transporte_info.addMarker(marker).showInfoWindow();
+        } else {
+            mapa_transporte_info.addMarker(marker);
+        }
+
+        if (latitud_actual != 0 && longitud_actual != 0) {
+            lugarEnMapa = new LatLng(latitud_actual, longitud_actual);
+
+            marker = new MarkerOptions();
+            marker.position(lugarEnMapa);
+            marker.title("Actual");
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.camion));
+
+            mapa_transporte_info.addMarker(marker);
+        }
     }
 }

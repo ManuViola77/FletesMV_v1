@@ -17,6 +17,7 @@ public class Constantes {
     public static final String URL_LOGIN = URL_BD+"users/login";
     //public static final String URL_TRANSPORTES = URL_BD+"transportations";
     public static final String URL_TRANSPORTES = "https://bios-fletes-api.herokuapp.com/api/student/1/transportations";
+    public static final String URL_GPS = "https://bios-fletes-api.herokuapp.com/api/student/1/transportations";
 
     public static final String TAG_LOG = "FletesMV_LOG";
 
@@ -27,6 +28,8 @@ public class Constantes {
     public static final String extra_transporte_origen_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_origen_longitud";
     public static final String extra_transporte_destino_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_latitud";
     public static final String extra_transporte_destino_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_destino_longitud";
+    public static final String extra_transporte_ultima_latitud = "com.bios.mv.fletesmv_v1.extra_transporte_ultima_latitud";
+    public static final String extra_transporte_ultima_longitud = "com.bios.mv.fletesmv_v1.extra_transporte_ultima_longitud";
     public static final String extra_transporte_modo = "com.bios.mv.fletesmv_v1.extra_transporte_modo";
 
     public static final String extra_iniciar_traslado = "com.bios.mv.fletesmv_v1.extra_iniciar_traslado";
