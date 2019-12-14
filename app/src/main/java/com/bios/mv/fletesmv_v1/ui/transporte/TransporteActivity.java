@@ -1,5 +1,6 @@
 package com.bios.mv.fletesmv_v1.ui.transporte;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.location.Location;
@@ -16,7 +17,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
@@ -53,6 +53,8 @@ import com.google.android.gms.tasks.Task;
 
 
 public class TransporteActivity extends AppCompatActivity {
+
+    private Context contexto;
 
     private TextView titulo;
     private TextView fecha;
@@ -94,6 +96,8 @@ public class TransporteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_transporte);
+
+        contexto = this;
 
         // Mantengo activa la pantalla para que no tengan que estar presionando para que no se vaya.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -357,9 +361,9 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void setearGPS() {
-        // **************************************
-        // Obtener localización GPS del telefono
-        // **************************************
+        /****************************************
+         * Obtener localización GPS del telefono
+         ****************************************/
 
         flpClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -389,9 +393,9 @@ public class TransporteActivity extends AppCompatActivity {
 
         flpClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
-        // **************************************
-        // Fin de obtener localización GPS del telefono
-        // **************************************
+        /************************************************
+         * Fin de Obtener localización GPS del telefono
+         ************************************************/
     }
 
     private void pararGPS() {
@@ -431,8 +435,10 @@ public class TransporteActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
-            pararGPS();
+        if (transporte != null) {
+            if (transporte.getEstado().equals(Constantes.iniciado) || transporte.getEstado().equals(Constantes.viajando)) {
+                pararGPS();
+            }
         }
     }
 
@@ -463,7 +469,7 @@ public class TransporteActivity extends AppCompatActivity {
 
                     ubicaciones.add(location);
 
-                    mandarUbicacion();
+                    Procedimientos.InvocarServicios.mandarUbicacion(contexto,transporte.getId(),ultimaLatitud,ultimaLongitud);
                 }
 
                 String texto = String.format("\n\n--ACTUALIZO\n\nLat:%s\nLon:%s\nFecha:%s",
@@ -494,49 +500,6 @@ public class TransporteActivity extends AppCompatActivity {
                 fecha);
 
         Log.i(Constantes.TAG_LOG,"En obtenerLocalizacion: "+texto);
-    }
-
-    private void mandarUbicacion() {
-        String URL_transporte_gps = Constantes.URL_GPS+"/"+transporte.getId()+"/location";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        Map<String, String> params = new HashMap();
-        params.put("latitud", Double.toString(ultimaLatitud));
-        params.put("longitud", Double.toString(ultimaLongitud));
-        JSONObject parameters = new JSONObject(params);
-
-        Log.i(Constantes.TAG_LOG,"mandando mi ubicacion actual con params: "+parameters);
-        Log.i(Constantes.TAG_LOG,"URL_transporte_gps: "+URL_transporte_gps);
-
-        JsonObjectRequest solicitud = new JsonObjectRequest(
-                Request.Method.POST,
-                URL_transporte_gps,
-                parameters,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        manejarRespuestaMandarUbicacion(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarErrorMandarUbicacion(error);
-                    }
-                }
-        );
-
-        requestQueue.add(solicitud);
-    }
-
-    private void manejarErrorMandarUbicacion(VolleyError error) {
-        Log.e(Constantes.TAG_LOG,"error mandando ubicacion: "+error.getMessage());
-        Toast.makeText(this,"Error mandando ubicación",Toast.LENGTH_LONG).show();
-    }
-
-    private void manejarRespuestaMandarUbicacion(JSONObject response) {
-        Log.i(Constantes.TAG_LOG,"Usted está en: "+ultimaLatitud + ": "+ultimaLongitud);
     }
 
 }
