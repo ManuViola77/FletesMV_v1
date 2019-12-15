@@ -58,7 +58,7 @@ public class NotificacionService extends IntentService {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, Constantes.CANAL_SERVICIO_NOTIFICACION);
         builder.setContentTitle("Notificación de Traslado Próximo");
-        builder.setSmallIcon(R.drawable.camion);
+        builder.setSmallIcon(R.mipmap.fletesmv_logo_round);
         builder.setContentText("En x días comienza el traslado y");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
