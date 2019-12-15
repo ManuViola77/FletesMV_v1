@@ -32,12 +32,9 @@ public class NotificacionService extends IntentService {
         // TODO: SOLO PARA PROBAR; DESPUES BORRAR!!!!!!!!!!!!
         fechaAcual = Procedimientos.getFechaActual();
 
-        Log.i(Constantes.TAG_LOG,"fecha_ultima_noti: "+fecha_ultima_noti+" fechaAcual: "+fechaAcual);
+        String usuario_logueado = Procedimientos.getVariableSesionString(this,Constantes.NOMBRE,Constantes.CODIGO_USUARIO);
 
-        int comparacion = fechaAcual.compareTo(fecha_ultima_noti);
-        Log.i(Constantes.TAG_LOG,"comparacion: "+comparacion);
-
-        if (fecha_ultima_noti.isEmpty() || fechaAcual.compareTo(fecha_ultima_noti) > 0) {
+        if (!usuario_logueado.isEmpty() && (fecha_ultima_noti.isEmpty() || fechaAcual.compareTo(fecha_ultima_noti) > 0)) {
             // Si estoy en una fecha superior a la ultima vez que mande notificacion
             // entonces mando notificacion de nuevo
             mandarNotificacion();
