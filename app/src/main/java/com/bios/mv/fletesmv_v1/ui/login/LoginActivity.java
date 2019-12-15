@@ -24,6 +24,7 @@ import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Usuario;
 import com.bios.mv.fletesmv_v1.bd.converter.UsuarioConverter;
 import com.bios.mv.fletesmv_v1.ui.registro.RegistroActivity;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
@@ -34,8 +35,8 @@ public class LoginActivity  extends AppCompatActivity {
     private Button boton_registrarse;
     private Button boton_login;
 
-    private EditText username;
-    private EditText password;
+    private TextInputLayout username;
+    private TextInputLayout password;
 
     private RequestQueue requestQueue;
 
@@ -43,6 +44,9 @@ public class LoginActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // oculta teclado para que no este apenas se entra a la activity
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         boton_registrarse = findViewById(R.id.boton_registrarse);
         boton_registrarse.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +71,52 @@ public class LoginActivity  extends AppCompatActivity {
                 login();
             }
         });
+
+        username.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarUserName();
+                }
+            }
+        });
+
+        password.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarPassword();
+                }
+            }
+        });
+    }
+
+    private boolean validarUserName() {
+        if (username.getEditText().getText().toString().isEmpty()) {
+            username.setError("Debe ingresar el mail");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        username.setError(null);
+
+        return true;
+    }
+
+    private boolean validarPassword() {
+        if (password.getEditText().getText().toString().isEmpty()) {
+            password.setError("Debe ingresar la constraseña");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        password.setError(null);
+
+        return true;
     }
 
     private void registrarse(Context contexto) {
@@ -82,40 +132,36 @@ public class LoginActivity  extends AppCompatActivity {
     }
 
     private void login(){
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        if (validarUserName() & validarPassword()) {
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(username.getText().toString());
-        usuario.setPassword(password.getText().toString());
+            Usuario usuario = new Usuario();
+            usuario.setEmail(username.getEditText().getText().toString());
+            usuario.setPassword(password.getEditText().getText().toString());
 
-        //Log.i(Constantes.getTagLog(),"Usuario: "+usuario);
+            JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
 
-        JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
+            // Crear solicitud
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST,
+                    Constantes.URL_LOGIN,
+                    parameters, // datos del post
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            manejarRespuesta(response);
+                        } // codigo de success
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarError(error);
+                        } // codigo de error
+                    }
+            );
 
-        //Log.i(Constantes.getTagLog(),"parameters: "+parameters);
-
-        //Log.i(Constantes.getTagLog(),"URL_LOGIN: "+URL_LOGIN);
-
-        // Crear solicitud
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
-                Constantes.URL_LOGIN,
-                parameters, // datos del post
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        manejarRespuesta(response);
-                    } // codigo de success
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarError(error);
-                    } // codigo de error
-                }
-        );
-
-        requestQueue.add(request);
+            requestQueue.add(request);
+        }
     }
 
     private void manejarRespuesta(JSONObject respuesta) {

@@ -5,8 +5,8 @@
     <string name="title_notifications">Mapa</string>
 
     <string name="action_login">Iniciar Sesión</string>
-    <string name="ayuda_password">Ingrese Contraseña...</string>
-    <string name="ayuda_email">Ingrese Mail...</string>
+    <string name="login_hint_password">Contraseña</string>
+    <string name="login_hint_email">Mail</string>
     <string name="title_activity_login">Login</string>
     <string name="texto_registrarse">Aún no está registrado? Regístrese ahora!</string>
 
@@ -65,4 +65,5 @@
     <string name="title_transporte_vehiculo_modelo">Modelo</string>
     <string name="title_transporte_vehiculo_matricula">Matrícula</string>
     <string name="title_transporte_vehiculo_chofer">Chofer</string>
+    <string name="login_titulo">Login</string>
 </resources>
