@@ -8,6 +8,7 @@ package com.bios.mv.fletesmv_v1;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
+import com.bios.mv.fletesmv_v1.servicios.NotificacionService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -62,7 +64,6 @@ public class Procedimientos {
     }
 
     public static String formatearFecha(String fechaSinFormatear) throws ParseException {
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Date date = format.parse ( fechaSinFormatear );
@@ -74,16 +75,14 @@ public class Procedimientos {
         String fechaFormateada = dateFormat.format(date);
 
         return fechaFormateada;
-
     }
 
     public static String getFechaActual() {
-
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
-
     }
-    public void prueba() {
 
+    public static String getFechaActualSinHora() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
     }
 
     public static class InvocarServicios {

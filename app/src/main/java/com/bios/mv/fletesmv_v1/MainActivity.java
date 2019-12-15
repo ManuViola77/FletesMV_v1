@@ -1,13 +1,18 @@
 package com.bios.mv.fletesmv_v1;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.bios.mv.fletesmv_v1.bd.Constantes;
+import com.bios.mv.fletesmv_v1.servicios.NotificacionService;
 import com.bios.mv.fletesmv_v1.ui.configuraciones.ConfiguracionesActivity;
 import com.bios.mv.fletesmv_v1.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,6 +46,24 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canal = new NotificationChannel(
+                    Constantes.CANAL_SERVICIO_NOTIFICACION,
+                    "Notificaciones de Traslados",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            manager.createNotificationChannel(canal);
+        }
+
+        // Empiezo servicio para las notificaciones de los traslados
+        Intent intent = new Intent(this, NotificacionService.class);
+        startService(intent);
     }
 
     @Override
