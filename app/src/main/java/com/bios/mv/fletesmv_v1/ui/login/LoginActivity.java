@@ -59,9 +59,6 @@ public class LoginActivity  extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
 
-        username.setFocusableInTouchMode(true);
-        password.setFocusableInTouchMode(true);
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         boton_login = findViewById(R.id.boton_login);

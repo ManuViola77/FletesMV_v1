@@ -14,10 +14,10 @@
     <string name="registrarse">Registrarse</string>
     <string name="action_confirmar_registro">Confirmar</string>
     <string name="bienvenida_registro">Registro de Usuario</string>
-    <string name="txt_nombre">Nombre</string>
-    <string name="txt_apellido">Apellido</string>
-    <string name="txt_mail">Mail</string>
-    <string name="txt_contrasena">Contraseña</string>
+    <string name="registro_hint_nombre">Nombre</string>
+    <string name="registro_hint_apellido">Apellido</string>
+    <string name="registro_hint_mail">Mail</string>
+    <string name="registro_hint_contrasena">Contraseña</string>
 
     <string name="title_Logout"> Cerrar Sesión</string>
     <string name="txt_logout">Cerrar Sesión</string>
