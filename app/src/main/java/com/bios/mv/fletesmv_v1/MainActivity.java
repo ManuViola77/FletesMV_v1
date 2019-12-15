@@ -1,7 +1,9 @@
 package com.bios.mv.fletesmv_v1;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +14,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.bios.mv.fletesmv_v1.bd.Constantes;
-import com.bios.mv.fletesmv_v1.servicios.NotificacionService;
+import com.bios.mv.fletesmv_v1.servicios.NotificacionReceiver;
 import com.bios.mv.fletesmv_v1.ui.configuraciones.ConfiguracionesActivity;
 import com.bios.mv.fletesmv_v1.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,7 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
 
-        //
+        // Creo canal para las notificaciones
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel canal = new NotificationChannel(
                     Constantes.CANAL_SERVICIO_NOTIFICACION,
@@ -61,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
             manager.createNotificationChannel(canal);
         }
 
-        // Empiezo servicio para las notificaciones de los traslados
-        Intent intent = new Intent(this, NotificacionService.class);
-        startService(intent);
+        AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificacionReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
     @Override
@@ -140,4 +142,5 @@ public class MainActivity extends AppCompatActivity {
         // Empiezo la actividad del intent.
         startActivity(intent);
     }
+
 }

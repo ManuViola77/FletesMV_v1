@@ -8,9 +8,7 @@ package com.bios.mv.fletesmv_v1;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,28 +19,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
-import com.bios.mv.fletesmv_v1.servicios.NotificacionService;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 public class Procedimientos {
 
@@ -83,6 +73,34 @@ public class Procedimientos {
 
     public static String getFechaActualSinHora() {
         return new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+    }
+
+    public static boolean correspondeMandarNotificacion(String fechaString, String diasAnticipacionString) {
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+        String fechaActualString = getFechaActual();
+
+        Date fechaActual = null;
+        Date fechaTraslado = null;
+        try {
+            fechaActual = sdf.parse(fechaActualString);
+            fechaTraslado = sdf.parse(fechaString);
+
+            long diff = fechaTraslado.getTime() - fechaActual.getTime();
+
+            int diferenciaDias = (int) (diff / (24 * 60 * 60 * 1000));
+
+            int diasAnticipacion = Integer.parseInt(diasAnticipacionString);
+
+            if (diferenciaDias == diasAnticipacion) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
     public static class InvocarServicios {
