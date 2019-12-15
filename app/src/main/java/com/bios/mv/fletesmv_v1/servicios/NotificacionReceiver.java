@@ -118,6 +118,6 @@ public class NotificacionReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager) contexto.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(Constantes.NOTIFICATION_ID, notification);
+        manager.notify((int) System.currentTimeMillis(), notification);
     }
 }

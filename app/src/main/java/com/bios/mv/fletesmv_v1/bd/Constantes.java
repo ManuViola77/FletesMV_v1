@@ -10,10 +10,8 @@ public class Constantes {
 
     public static final String NOMBRE = "com.bios.mv.fletesmv_v1";
     public static final String CODIGO_USUARIO = "com.bios.mv.fletesmv_v1.usuario_logueado";
-    public static final String FECHA_ULTIMA_NOTI = "com.bios.mv.fletesmv_v1.fecha_ultima_notificacion";
     public static final String CANAL_SERVICIO_NOTIFICACION = "com.bios.mv.fletesmv_v1.canal_servicio_notificacion";
     public static final int NOTIFICATION_ID = 1;
-    public static final String ACCION_REVIVIR = "com.bios.mv.fletesmv_v1.accion_revivir";
     public static final String TRANSPORTE_KEY = "com.bios.mv.fletesmv_v1.TRANSPORTE_KEY";
 
     public static final String URL_BD = "https://bios-fletes-api.herokuapp.com/api/student/47491070/";
