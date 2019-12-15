@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/finalizar_traslado_titulo"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Texto_Mediano"
-        android:text="@string/finalizar_traslado_titulo"
-        android:textAlignment="center" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/finalizar_traslado_texto_recepcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/texto_finalizar_traslado"
-        style="@style/Texto"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp"
-        android:layout_marginLeft="10sp" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/finalizar_traslado_nombre_receptor"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_margin="16dp"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:errorTextAppearance="@style/texto_error"
-        app:hintTextAppearance="@style/TextoHint">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:singleLine="true"
+        <!-- Titulo de la pantalla -->
+        <TextView
+            android:id="@+id/finalizar_traslado_titulo"
+            style="@style/Texto_Mediano"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/finalizar_traslado_hint_nombre_receptor"/>
+            android:text="@string/finalizar_traslado_titulo"
+            android:textAlignment="center" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:id="@+id/finalizar_traslado_observacion"
-        android:layout_margin="16dp"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:errorTextAppearance="@style/texto_error"
-        app:hintTextAppearance="@style/TextoHint">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <!-- Texto explicativo -->
+        <TextView
+            android:id="@+id/finalizar_traslado_texto_recepcion"
+            style="@style/Texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/finalizar_traslado_hint_observacion"/>
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="20sp"
+            android:text="@string/texto_finalizar_traslado"
+            android:textSize="18sp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/boton_finalizar_traslado"
-        style="@style/Boton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/finalizar_traslado_boton_finalizar"
-        android:layout_gravity="center"
-        android:textAlignment="center" />
-</LinearLayout>
+        <!--  Nombre Receptor -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/finalizar_traslado_nombre_receptor"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorTextAppearance="@style/texto_error"
+            app:hintTextAppearance="@style/TextoHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/finalizar_traslado_hint_nombre_receptor"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--  Observación -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/finalizar_traslado_observacion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:errorTextAppearance="@style/texto_error"
+            app:hintTextAppearance="@style/TextoHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/finalizar_traslado_hint_observacion"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--  Boton Finalizar Traslado -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/boton_finalizar_traslado"
+            style="@style/Boton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/finalizar_traslado_boton_finalizar"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,6 +1,5 @@
 package com.bios.mv.fletesmv_v1.ui.transporte;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,14 +18,11 @@ import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Recepcion;
-import com.bios.mv.fletesmv_v1.bd.Vehiculo;
 import com.bios.mv.fletesmv_v1.bd.converter.RecepcionConverter;
-import com.bios.mv.fletesmv_v1.bd.converter.VehiculoConverter;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 

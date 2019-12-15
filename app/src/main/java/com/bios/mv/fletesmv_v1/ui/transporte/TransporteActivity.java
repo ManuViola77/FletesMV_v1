@@ -136,45 +136,52 @@ public class TransporteActivity extends AppCompatActivity {
         boton_iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boton_iniciar.setEnabled(false);
-                String estado = transporte.getEstado();
-                String estadoNuevo;
-                switch (estado) {
-                    case Constantes.pendiente:
-                        // Paso de Pendiente a Iniciado pero paso por el pedido de los datos del vehiculo
-                        iniciarTraslado(view);
-                        break;
-
-                    case Constantes.iniciado:
-                        // Paso de iniciado a cargando
-                        estadoNuevo = "cargando";
-                        cambiarEstadoTraslado(view, estadoNuevo);
-                        break;
-
-                    case Constantes.cargando:
-                        // Paso de cargando a viajando
-                        estadoNuevo = "viajando";
-                        cambiarEstadoTraslado(view, estadoNuevo);
-                        break;
-
-                    case Constantes.viajando:
-                        // Paso de viajando a descargando
-                        estadoNuevo = "descargando";
-                        cambiarEstadoTraslado(view, estadoNuevo);
-                        break;
-
-                    case Constantes.descargando:
-                        // Paso de descargando a finalizado pero paso por el pedido de los datos de la recepcion
-                        finalizarTraslado(view);
-                        break;
-
-                    case Constantes.finalizado:
-                        // En este estado no pasa nada. El botón ni siquiera está visible.
-                        break;
-                }
+                accionBoton(view);
             }
         });
 
+    }
+
+    private void accionBoton(View view) {
+        boton_iniciar.setEnabled(false);
+
+        pararGPS();
+
+        String estado = transporte.getEstado();
+        String estadoNuevo;
+        switch (estado) {
+            case Constantes.pendiente:
+                // Paso de Pendiente a Iniciado pero paso por el pedido de los datos del vehiculo
+                iniciarTraslado(view);
+                break;
+
+            case Constantes.iniciado:
+                // Paso de iniciado a cargando
+                estadoNuevo = "cargando";
+                cambiarEstadoTraslado(view, estadoNuevo);
+                break;
+
+            case Constantes.cargando:
+                // Paso de cargando a viajando
+                estadoNuevo = "viajando";
+                cambiarEstadoTraslado(view, estadoNuevo);
+                break;
+
+            case Constantes.viajando:
+                // Paso de viajando a descargando
+                estadoNuevo = "descargando";
+                cambiarEstadoTraslado(view, estadoNuevo);
+                break;
+
+            case Constantes.descargando:
+                // Paso de descargando a finalizado pero paso por el pedido de los datos de la recepcion
+                finalizarTraslado(view);
+                break;
+
+            case Constantes.finalizado:
+                // En este estado no pasa nada. El botón ni siquiera está visible.
+                break;
+        }
     }
 
     private void finalizarTraslado(View view) {
@@ -324,6 +331,7 @@ public class TransporteActivity extends AppCompatActivity {
                 boton_iniciar.setVisibility(View.VISIBLE);
                 boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_iniciar));
                 boton_iniciar.setEnabled(true);
+                pararGPS();
                 break;
 
             case Constantes.iniciado:
@@ -338,6 +346,7 @@ public class TransporteActivity extends AppCompatActivity {
                 boton_iniciar.setVisibility(View.VISIBLE);
                 boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_viajar));
                 boton_iniciar.setEnabled(true);
+                pararGPS();
                 break;
 
             case Constantes.viajando:
@@ -352,10 +361,12 @@ public class TransporteActivity extends AppCompatActivity {
                 boton_iniciar.setVisibility(View.VISIBLE);
                 boton_iniciar.setText(getResources().getString(R.string.transporte_info_boton_finalizar));
                 boton_iniciar.setEnabled(true);
+                pararGPS();
                 break;
 
             case Constantes.finalizado:
                 boton_iniciar.setVisibility(View.GONE);
+                pararGPS();
                 break;
         }
 

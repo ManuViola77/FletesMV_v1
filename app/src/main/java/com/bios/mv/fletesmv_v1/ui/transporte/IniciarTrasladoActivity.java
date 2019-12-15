@@ -18,6 +18,7 @@ import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Vehiculo;
 import com.bios.mv.fletesmv_v1.bd.converter.VehiculoConverter;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
@@ -28,10 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class IniciarTrasladoActivity extends AppCompatActivity {
 
     private TextView titulo;
-    private TextView marca;
-    private TextView modelo;
-    private TextView matricula;
-    private TextView chofer;
+    private TextInputLayout marca;
+    private TextInputLayout modelo;
+    private TextInputLayout matricula;
+    private TextInputLayout chofer;
     private Button boton_iniciar_traslado;
 
     private int idTraslado;
@@ -66,44 +67,141 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
         boton_iniciar_traslado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTraslado;
-
-                RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-
-                Vehiculo vehiculo = new Vehiculo();
-
-                vehiculo.setMarca(marca.getText().toString());
-                vehiculo.setModelo(modelo.getText().toString());
-                vehiculo.setMatricula(matricula.getText().toString());
-                vehiculo.setChofer(chofer.getText().toString());
-
-                JSONObject parameters = VehiculoConverter.convertVehiculoToJSONOBject(vehiculo);
-
-                JsonObjectRequest solicitud = new JsonObjectRequest(
-                        Request.Method.POST,
-                        URL_transporte_info,
-                        parameters,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                manejarRespuesta();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                manejarError(error);
-
-                            }
-                        }
-                );
-
-                requestQueue.add(solicitud);
-
+                iniciarTraslado(view);
             }
         });
 
+        marca.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarMarca();
+                }
+            }
+        });
+
+        modelo.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarModelo();
+                }
+            }
+        });
+
+        matricula.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarMatricula();
+                }
+            }
+        });
+
+        chofer.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validarChofer();
+                }
+            }
+        });
+
+    }
+
+    private void iniciarTraslado(View view){
+        if (validarMarca() & validarModelo() & validarMatricula() & validarChofer()) {
+
+            String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTraslado;
+
+            RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+
+            Vehiculo vehiculo = new Vehiculo();
+
+            vehiculo.setMarca(marca.getEditText().getText().toString());
+            vehiculo.setModelo(modelo.getEditText().getText().toString());
+            vehiculo.setMatricula(matricula.getEditText().getText().toString());
+            vehiculo.setChofer(chofer.getEditText().getText().toString());
+
+            JSONObject parameters = VehiculoConverter.convertVehiculoToJSONOBject(vehiculo);
+
+            JsonObjectRequest solicitud = new JsonObjectRequest(
+                    Request.Method.POST,
+                    URL_transporte_info,
+                    parameters,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            manejarRespuesta();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarError(error);
+
+                        }
+                    }
+            );
+
+            requestQueue.add(solicitud);
+        }
+    }
+
+    private boolean validarMarca() {
+        if (marca.getEditText().getText().toString().isEmpty()) {
+            marca.setError("Debe ingresar la marca");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        marca.setError(null);
+
+        return true;
+    }
+
+    private boolean validarModelo() {
+        if (modelo.getEditText().getText().toString().isEmpty()) {
+            modelo.setError("Debe ingresar el modelo");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        modelo.setError(null);
+
+        return true;
+    }
+
+    private boolean validarMatricula() {
+        if (matricula.getEditText().getText().toString().isEmpty()) {
+            matricula.setError("Debe ingresar la matrícula");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        matricula.setError(null);
+
+        return true;
+    }
+
+    private boolean validarChofer() {
+        if (chofer.getEditText().getText().toString().isEmpty()) {
+            chofer.setError("Debe ingresar el chofer");
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            return false;
+        }
+
+        chofer.setError(null);
+
+        return true;
     }
 
     private void manejarError(VolleyError error) {

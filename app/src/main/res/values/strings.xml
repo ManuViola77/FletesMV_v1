@@ -35,10 +35,10 @@
     <string name="transporte_info_titulo">Traslado %s - %s</string>
     <string name="title_transporte_sin_datos">Traslado</string>
     <string name="title_transporte_vehiculo">Vehículo</string>
-    <string name="title_transporte_vehiculo_marca">Marca</string>
-    <string name="title_transporte_vehiculo_modelo">Modelo</string>
-    <string name="title_transporte_vehiculo_matricula">Matrícula</string>
-    <string name="title_transporte_vehiculo_chofer">Chofer</string>
+    <string name="iniciar_traslado_hint_vehiculo_marca">Marca</string>
+    <string name="iniciar_traslado_hint_vehiculo_modelo">Modelo</string>
+    <string name="iniciar_traslado_hint_vehiculo_matricula">Matrícula</string>
+    <string name="iniciar_traslado_hint_vehiculo_chofer">Chofer</string>
     <string name="title_transporte_recepcion">Recepción</string>
     <string name="title_transporte_recepcion_nombre">Receptor</string>
     <string name="title_transporte_recepcion_observacion">Observación</string>
@@ -55,10 +55,14 @@
     <string name="transporte_info_boton_viajar">Viajar</string>
     <string name="transporte_info_boton_descargar">Descargar</string>
     <string name="transporte_info_boton_finalizar">Finalizar</string>
-    <string name="title_finalizar_traslado">Confirmación de traslado finalizado</string>
+    <string name="title_finalizar_traslado">Formulario de Recepción</string>
     <string name="finalizar_traslado_boton_finalizar">Confirmar</string>
     <string name="finalizar_traslado_titulo">Finalizar Traslado %s</string>
     <string name="texto_finalizar_traslado">Por favor, ingrese los datos de la recepción.</string>
     <string name="finalizar_traslado_hint_nombre_receptor">Ingresar Nombre del Receptor</string>
     <string name="finalizar_traslado_hint_observacion">Ingresar Observación</string>
+    <string name="title_transporte_vehiculo_marca">Marca</string>
+    <string name="title_transporte_vehiculo_modelo">Modelo</string>
+    <string name="title_transporte_vehiculo_matricula">Matrícula</string>
+    <string name="title_transporte_vehiculo_chofer">Chofer</string>
 </resources>
