@@ -137,7 +137,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_vehiculo_marca"
@@ -160,7 +160,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_vehiculo_modelo"
@@ -183,7 +183,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_vehiculo_matricula"
@@ -206,7 +206,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_vehiculo_chofer"
@@ -260,7 +260,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_recepcion_nombre"
@@ -283,7 +283,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_recepcion_observacion"
@@ -306,7 +306,7 @@
 
                     <TextView
                         style="@style/Titulo_Formulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/title_transporte_recepcion_fecha"
