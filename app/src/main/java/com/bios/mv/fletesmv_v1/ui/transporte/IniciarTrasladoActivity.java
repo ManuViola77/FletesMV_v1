@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Vehiculo;
@@ -110,41 +111,47 @@ public class IniciarTrasladoActivity extends AppCompatActivity {
     }
 
     private void iniciarTraslado(View view){
-        if (validarMarca() & validarModelo() & validarMatricula() & validarChofer()) {
+        if (Procedimientos.tieneConexionInternet(this)) {
+            if (validarMarca() & validarModelo() & validarMatricula() & validarChofer()) {
 
-            String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTraslado;
+                String URL_transporte_info = Constantes.URL_TRANSPORTES + "/" + idTraslado;
 
-            RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+                RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
-            Vehiculo vehiculo = new Vehiculo();
+                Vehiculo vehiculo = new Vehiculo();
 
-            vehiculo.setMarca(marca.getEditText().getText().toString());
-            vehiculo.setModelo(modelo.getEditText().getText().toString());
-            vehiculo.setMatricula(matricula.getEditText().getText().toString());
-            vehiculo.setChofer(chofer.getEditText().getText().toString());
+                vehiculo.setMarca(marca.getEditText().getText().toString());
+                vehiculo.setModelo(modelo.getEditText().getText().toString());
+                vehiculo.setMatricula(matricula.getEditText().getText().toString());
+                vehiculo.setChofer(chofer.getEditText().getText().toString());
 
-            JSONObject parameters = VehiculoConverter.convertVehiculoToJSONOBject(vehiculo);
+                JSONObject parameters = VehiculoConverter.convertVehiculoToJSONOBject(vehiculo);
 
-            JsonObjectRequest solicitud = new JsonObjectRequest(
-                    Request.Method.POST,
-                    URL_transporte_info,
-                    parameters,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manejarRespuesta();
+                JsonObjectRequest solicitud = new JsonObjectRequest(
+                        Request.Method.POST,
+                        URL_transporte_info,
+                        parameters,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                manejarRespuesta();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                manejarError(error);
+
+                            }
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            manejarError(error);
+                );
 
-                        }
-                    }
-            );
+                requestQueue.add(solicitud);
+            } else {
+                Toast.makeText(this,"No se puede iniciar el traslado debido a que no hay internet",Toast.LENGTH_LONG).show();
 
-            requestQueue.add(solicitud);
+                finish();
+            }
         }
     }
 

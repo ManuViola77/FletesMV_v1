@@ -100,38 +100,46 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void registrar(View view) {
-        if (validarNombre() & validarApellido() & validarMail() & validarContrasena()) {
-            // Inicializo cola de solicitudes
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
+        if (Procedimientos.tieneConexionInternet(this)) {
+            if (validarNombre() & validarApellido() & validarMail() & validarContrasena()) {
+                boton_confirmar_registro.setEnabled(false);
 
-            Usuario usuario = new Usuario();
-            usuario.setName(nombre.getEditText().getText().toString());
-            usuario.setLast_name(apellido.getEditText().getText().toString());
-            usuario.setEmail(mail.getEditText().getText().toString());
-            usuario.setPassword(contrasena.getEditText().getText().toString());
+                // Inicializo cola de solicitudes
+                requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-            JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
+                Usuario usuario = new Usuario();
+                usuario.setName(nombre.getEditText().getText().toString());
+                usuario.setLast_name(apellido.getEditText().getText().toString());
+                usuario.setEmail(mail.getEditText().getText().toString());
+                usuario.setPassword(contrasena.getEditText().getText().toString());
 
-            // Crear solicitud
-            JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.POST,
-                    Constantes.URL_REGISTRO,
-                    parameters, // datos del post
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manejarRespuesta(response);
-                        } // codigo de success
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            manejarError(error);
-                        } // codigo de error
-                    }
-            );
+                JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
 
-            requestQueue.add(request);
+                // Crear solicitud
+                JsonObjectRequest request = new JsonObjectRequest(
+                        Request.Method.POST,
+                        Constantes.URL_REGISTRO,
+                        parameters, // datos del post
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                manejarRespuesta(response);
+                            } // codigo de success
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                manejarError(error);
+                            } // codigo de error
+                        }
+                );
+
+                requestQueue.add(request);
+            }
+        } else {
+            Toast.makeText(this,
+                    "No se pudo realizar el registro debido a que no hay internet",
+                    Toast.LENGTH_LONG).show();
         }
     }
 

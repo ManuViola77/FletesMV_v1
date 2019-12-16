@@ -129,35 +129,43 @@ public class LoginActivity  extends AppCompatActivity {
     }
 
     private void login(){
-        if (validarUserName() & validarPassword()) {
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
+        if (Procedimientos.tieneConexionInternet(this)) {
+            if (validarUserName() & validarPassword()) {
+                boton_login.setEnabled(false);
 
-            Usuario usuario = new Usuario();
-            usuario.setEmail(username.getEditText().getText().toString());
-            usuario.setPassword(password.getEditText().getText().toString());
+                requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-            JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
+                Usuario usuario = new Usuario();
+                usuario.setEmail(username.getEditText().getText().toString());
+                usuario.setPassword(password.getEditText().getText().toString());
 
-            // Crear solicitud
-            JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.POST,
-                    Constantes.URL_LOGIN,
-                    parameters, // datos del post
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manejarRespuesta(response);
-                        } // codigo de success
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            manejarError(error);
-                        } // codigo de error
-                    }
-            );
+                JSONObject parameters = UsuarioConverter.convertUsuarioToJSONOBject(usuario);
 
-            requestQueue.add(request);
+                // Crear solicitud
+                JsonObjectRequest request = new JsonObjectRequest(
+                        Request.Method.POST,
+                        Constantes.URL_LOGIN,
+                        parameters, // datos del post
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                manejarRespuesta(response);
+                            } // codigo de success
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                manejarError(error);
+                            } // codigo de error
+                        }
+                );
+
+                requestQueue.add(request);
+            }
+        } else {
+            Toast.makeText(this,
+                    "No se puede iniciar sesión debido a que no hay internet ",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -177,7 +185,7 @@ public class LoginActivity  extends AppCompatActivity {
 
     private void manejarError(VolleyError volleyError) {
         Toast.makeText(this,
-                "No se pudo realizar el registro, "+volleyError.getMessage(),
+                "No se pudo realizar el inicio de sesión, "+volleyError.getMessage(),
                 Toast.LENGTH_LONG).show();
     }
 

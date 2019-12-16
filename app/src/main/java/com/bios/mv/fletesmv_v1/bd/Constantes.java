@@ -41,4 +41,9 @@ public class Constantes {
     public static final String descargando = "descargando";
     public static final String finalizado = "finalizado";
 
+    public static final String NOMBRE_BASE = "fletesmv_v1";
+    public static final int VERSION_V1 = 1;
+
+    public static final String NOMBRE_TABLA_TRASLADOS = "Traslados";
+    public static final String NOMBRE_TABLA_TRASLADOS_INFO = "TrasladosInfo";
 }

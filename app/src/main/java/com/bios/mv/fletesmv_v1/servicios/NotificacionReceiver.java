@@ -22,10 +22,12 @@ import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Transporte;
+import com.bios.mv.fletesmv_v1.bd.TrasladoBD;
 import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 
 import org.json.JSONArray;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.core.app.NotificationCompat;
@@ -36,44 +38,64 @@ public class NotificacionReceiver extends BroadcastReceiver {
     private RequestQueue requestQueue;
     private Context contexto;
     private List<Transporte> transportes;
+    TrasladoBD trasladoBD;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         contexto = context;
+        trasladoBD = new TrasladoBD(contexto);
+
         buscarSiMandoNotificacion();
     }
 
     public void buscarSiMandoNotificacion() {
-        // Obtengo los traslados y me fijo si por la fecha corresponde mandar notificacion o no
+        // Si tiene conexion a internet llamo a volley sino llamo a mi base de datos
+        if (Procedimientos.tieneConexionInternet(contexto)) {
+            // Obtengo los traslados y me fijo si por la fecha corresponde mandar notificacion o no
 
-        // Inicializo cola de solicitudes
-        requestQueue = Volley.newRequestQueue(contexto);
+            // Inicializo cola de solicitudes
+            requestQueue = Volley.newRequestQueue(contexto);
 
-        // Crear solicitud
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET,
-                Constantes.URL_TRANSPORTES,
-                null, // codigo para datos del post
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        manejarRespuesta(response);
-                    } // codigo de success
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarError(error);
-                    } // codigo de error
-                }
-        );
+            // Crear solicitud
+            JsonArrayRequest request = new JsonArrayRequest(
+                    Request.Method.GET,
+                    Constantes.URL_TRANSPORTES,
+                    null, // codigo para datos del post
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            manejarRespuesta(response);
+                        } // codigo de success
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarError(error);
+                        } // codigo de error
+                    }
+            );
 
-        requestQueue.add(request);
+            requestQueue.add(request);
+        } else {
+            // obtengo los transportes de la base
+            transportes = trasladoBD.getTraslados();
+
+            // Ahora mando las notificaciones a los que corresponda
+            mandarNotificacionesTraslados();
+        }
     }
 
     private void manejarRespuesta(JSONArray respuesta) {
         transportes = TransporteConverter.convertFromJsonObject(respuesta);
 
+        // como tengo internet y obtuve datos los guardo en la base de datos
+        trasladoBD.setTraslados(transportes);
+
+        // Ahora mando las notificaciones a los que corresponda
+        mandarNotificacionesTraslados();
+    }
+
+    private void mandarNotificacionesTraslados() {
         // Obtengo el valor actual de días de anticipación para mandar notificacion
         SharedPreferences defaultSharedPreference = PreferenceManager.getDefaultSharedPreferences(contexto);
         String diasAnticipacion = defaultSharedPreference.getString(Constantes.conf_dias_noti_key,Constantes.conf_dias_noti_defecto);
@@ -94,6 +116,12 @@ public class NotificacionReceiver extends BroadcastReceiver {
         Toast.makeText(contexto,
                 "No se pudo obtener los datos de los transportes, "+volleyError.getMessage(),
                 Toast.LENGTH_LONG).show();
+
+        // obtengo los transportes de la base
+        transportes = trasladoBD.getTraslados();
+
+        // Ahora mando las notificaciones a los que corresponda
+        mandarNotificacionesTraslados();
     }
 
     public void mandarNotificacion(String diasAnticipacion, Transporte traslado) {
@@ -118,6 +146,8 @@ public class NotificacionReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager) contexto.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify((int) System.currentTimeMillis(), notification);
+        int numeroUnico = (int) System.currentTimeMillis();
+
+        manager.notify(numeroUnico, notification);
     }
 }

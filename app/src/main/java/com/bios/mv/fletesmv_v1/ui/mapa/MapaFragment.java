@@ -1,6 +1,5 @@
 package com.bios.mv.fletesmv_v1.ui.mapa;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,19 +20,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bios.mv.fletesmv_v1.Procedimientos;
 import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Transporte;
-import com.bios.mv.fletesmv_v1.bd.adapter.TransporteAdapter;
+import com.bios.mv.fletesmv_v1.bd.TrasladoBD;
 import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
-import com.bios.mv.fletesmv_v1.ui.transporte.TransporteActivity;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -51,6 +45,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     private RequestQueue requestQueue;
 
+    private TrasladoBD trasladoBD;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mapaViewModel =
@@ -63,6 +59,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 textView.setText(s);
             }
         });
+
+        trasladoBD = new TrasladoBD(rootView.getContext());
 
         return rootView;
     }
@@ -80,41 +78,63 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Inicializo cola de solicitudes
-        requestQueue = Volley.newRequestQueue(rootView.getContext());
+        // intento obtener los datos por la API si tengo internet
+        if (Procedimientos.tieneConexionInternet(rootView.getContext())) {
+            // Inicializo cola de solicitudes
+            requestQueue = Volley.newRequestQueue(rootView.getContext());
 
-        // Crear solicitud
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET,
-                Constantes.URL_TRANSPORTES,
-                null, // codigo para datos del post
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        manejarRespuesta(response);
-                    } // codigo de success
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarError(error);
-                    } // codigo de error
-                }
-        );
+            // Crear solicitud
+            JsonArrayRequest request = new JsonArrayRequest(
+                    Request.Method.GET,
+                    Constantes.URL_TRANSPORTES,
+                    null, // codigo para datos del post
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            manejarRespuesta(response);
+                        } // codigo de success
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarError(error);
+                        } // codigo de error
+                    }
+            );
 
-        requestQueue.add(request);
+            requestQueue.add(request);
+        } else {
+            // Si no tengo interenet obtengo los datos de la base de datos sqlite
+            List<Transporte> transportes = trasladoBD.getTraslados();
+
+            if (transportes != null)
+                setOrigenes(transportes);
+            else
+                Toast.makeText(rootView.getContext(),
+                        "No se pudo consultar los datos de los traslados ",
+                        Toast.LENGTH_LONG).show();
+        }
     }
 
     private void manejarRespuesta(JSONArray respuesta) {
-        List<Transporte> transportes =
-                TransporteConverter.convertFromJsonObject(respuesta);
+        List<Transporte> transportes = TransporteConverter.convertFromJsonObject(respuesta);
+        if (transportes != null)
+            setOrigenes(transportes);
+        else
+            Toast.makeText(rootView.getContext(),
+                    "No se pudo consultar los datos de los traslados ",
+                    Toast.LENGTH_LONG).show();
+    }
 
-        Transporte transporte;
-
-        for (int i = 0; i < transportes.size(); i++) {
-            transporte = transportes.get(i);
-
-            agregarOrigenAMapa(transporte);
+    private void setOrigenes(List<Transporte> transportes) {
+        if (Procedimientos.tieneConexionInternet(rootView.getContext() )) {
+            for (Transporte transporte : transportes) {
+                agregarOrigenAMapa(transporte);
+            }
+        } else {
+            Toast.makeText(rootView.getContext(),
+                    "No se puede mostrar el mapa debido a que no hay conexion a internet",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -122,6 +142,10 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(rootView.getContext(),
                 "No se pudo consultar los datos, "+volleyError.getMessage(),
                 Toast.LENGTH_LONG).show();
+
+        List<Transporte> transportes = trasladoBD.getTraslados();
+        if (transportes != null)
+            setOrigenes(transportes);
     }
 
     @Override
@@ -149,7 +173,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         marker.position(lugarEnMapa);
         marker.title("Traslado "+transporte.getId());
 
-        mapa_transportes.addMarker(marker);
+        if (mapa_transportes != null)
+            mapa_transportes.addMarker(marker);
     }
 
 }

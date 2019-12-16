@@ -9,6 +9,8 @@ package com.bios.mv.fletesmv_v1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -100,6 +102,13 @@ public class Procedimientos {
         }
     }
 
+    public static boolean tieneConexionInternet(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+    }
+
     public static class InvocarServicios {
 
         private static Context contexto;
@@ -120,42 +129,46 @@ public class Procedimientos {
          *
          *******************************************************************************/
         public static void mandarUbicacion(Context param_contexto, int transporteId, double param_latitud, double param_longitud) {
+            if (tieneConexionInternet(param_contexto)) {
+                contexto = param_contexto;
+                latitud = param_latitud;
+                longitud = param_longitud;
 
-            contexto = param_contexto;
-            latitud = param_latitud;
-            longitud = param_longitud;
+                String URL_transporte_gps = Constantes.URL_GPS + "/" + transporteId + "/location";
 
-            String URL_transporte_gps = Constantes.URL_GPS + "/" + transporteId + "/location";
+                RequestQueue requestQueue = Volley.newRequestQueue(contexto);
 
-            RequestQueue requestQueue = Volley.newRequestQueue(contexto);
+                Map<String, String> params = new HashMap();
+                params.put("latitud", Double.toString(latitud));
+                params.put("longitud", Double.toString(longitud));
+                JSONObject parameters = new JSONObject(params);
 
-            Map<String, String> params = new HashMap();
-            params.put("latitud", Double.toString(latitud));
-            params.put("longitud", Double.toString(longitud));
-            JSONObject parameters = new JSONObject(params);
+                Log.i(Constantes.TAG_LOG, "mandando mi ubicacion actual con params: " + parameters);
+                Log.i(Constantes.TAG_LOG, "URL_transporte_gps: " + URL_transporte_gps);
 
-            Log.i(Constantes.TAG_LOG, "mandando mi ubicacion actual con params: " + parameters);
-            Log.i(Constantes.TAG_LOG, "URL_transporte_gps: " + URL_transporte_gps);
-
-            JsonObjectRequest solicitud = new JsonObjectRequest(
-                    Request.Method.POST,
-                    URL_transporte_gps,
-                    parameters,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manejarRespuestaMandarUbicacion(response);
+                JsonObjectRequest solicitud = new JsonObjectRequest(
+                        Request.Method.POST,
+                        URL_transporte_gps,
+                        parameters,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                manejarRespuestaMandarUbicacion(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                manejarErrorMandarUbicacion(error);
+                            }
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            manejarErrorMandarUbicacion(error);
-                        }
-                    }
-            );
+                );
 
-            requestQueue.add(solicitud);
+                requestQueue.add(solicitud);
+            } else {
+                Log.e(Constantes.TAG_LOG, "error mandando ubicacion, no hay conexion a internet: ");
+                Toast.makeText(contexto, "No se puede mandar ubicación debido a que no hay conexión a internet", Toast.LENGTH_LONG).show();
+            }
         }
 
         private static void manejarErrorMandarUbicacion(VolleyError error) {

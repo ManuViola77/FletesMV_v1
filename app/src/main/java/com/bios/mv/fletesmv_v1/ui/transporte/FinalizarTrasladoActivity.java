@@ -85,45 +85,50 @@ public class FinalizarTrasladoActivity extends AppCompatActivity {
     }
 
     public void finalizarTraslado(View view) {
-        if (validarNombreReceptor(nombre_receptor) &
-                validarObservacion(observacion) ) {
+        if (Procedimientos.tieneConexionInternet(this)) {
+            if (validarNombreReceptor(nombre_receptor) &
+                    validarObservacion(observacion)) {
 
-            String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTraslado;
+                String URL_transporte_info = Constantes.URL_TRANSPORTES + "/" + idTraslado;
 
-            RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+                RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
-            Recepcion recepcion = new Recepcion();
+                Recepcion recepcion = new Recepcion();
 
-            recepcion.setNombre_receptor(nombre_receptor.getEditText().getText().toString());
-            recepcion.setObservacion(observacion.getEditText().getText().toString());
-            recepcion.setFecha(Procedimientos.getFechaActual());
-            recepcion.setLongitud(-34);
-            recepcion.setLatitud(34);
+                recepcion.setNombre_receptor(nombre_receptor.getEditText().getText().toString());
+                recepcion.setObservacion(observacion.getEditText().getText().toString());
+                recepcion.setFecha(Procedimientos.getFechaActual());
+                recepcion.setLongitud(-34);
+                recepcion.setLatitud(34);
 
-            JSONObject parameters = RecepcionConverter.convertRecepcionToJSONOBject(recepcion);
+                JSONObject parameters = RecepcionConverter.convertRecepcionToJSONOBject(recepcion);
 
-            Log.i(Constantes.TAG_LOG,"parameters: "+parameters);
+                Log.i(Constantes.TAG_LOG, "parameters: " + parameters);
 
-            JsonObjectRequest solicitud = new JsonObjectRequest(
-                    Request.Method.POST,
-                    URL_transporte_info,
-                    parameters,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            manejarRespuesta();
+                JsonObjectRequest solicitud = new JsonObjectRequest(
+                        Request.Method.POST,
+                        URL_transporte_info,
+                        parameters,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                manejarRespuesta();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                manejarError(error);
+
+                            }
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            manejarError(error);
+                );
 
-                        }
-                    }
-            );
-
-            requestQueue.add(solicitud);
+                requestQueue.add(solicitud);
+            }
+        } else {
+            Toast.makeText(this,"No se puede finalizar el traslado debido a que no hay internet",Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 

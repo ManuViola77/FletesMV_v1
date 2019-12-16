@@ -24,6 +24,7 @@ import com.bios.mv.fletesmv_v1.R;
 import com.bios.mv.fletesmv_v1.bd.Constantes;
 import com.bios.mv.fletesmv_v1.bd.Recepcion;
 import com.bios.mv.fletesmv_v1.bd.Transporte;
+import com.bios.mv.fletesmv_v1.bd.TrasladoInfoBD;
 import com.bios.mv.fletesmv_v1.bd.Vehiculo;
 import com.bios.mv.fletesmv_v1.bd.converter.TransporteConverter;
 
@@ -90,6 +91,7 @@ public class TransporteActivity extends AppCompatActivity {
     private double ultimaLongitud = 0;
     private double ultimaLatitud  = 0;
 
+    private TrasladoInfoBD trasladoInfoBD;
     //private List<Location> ubicaciones = new ArrayList<>();
 
     @Override
@@ -99,6 +101,8 @@ public class TransporteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transporte);
 
         contexto = this;
+
+        trasladoInfoBD = new TrasladoInfoBD(this);
 
         // Mantengo activa la pantalla para que no tengan que estar presionando para que no se vaya.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -139,7 +143,6 @@ public class TransporteActivity extends AppCompatActivity {
                 accionBoton(view);
             }
         });
-
     }
 
     private void accionBoton(View view) {
@@ -197,33 +200,37 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void cambiarEstadoTraslado(View view, String estado){
-        String URL_transporte_cambiar_estado = Constantes.URL_TRANSPORTES+"/"+transporte.getId();
+        if (Procedimientos.tieneConexionInternet(this)) {
+            String URL_transporte_cambiar_estado = Constantes.URL_TRANSPORTES + "/" + transporte.getId();
 
-        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+            RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
-        Map<String, String> params = new HashMap();
-        params.put("estado", estado);
-        JSONObject parameters = new JSONObject(params);
+            Map<String, String> params = new HashMap();
+            params.put("estado", estado);
+            JSONObject parameters = new JSONObject(params);
 
-        JsonObjectRequest solicitud = new JsonObjectRequest(
-                Request.Method.POST,
-                URL_transporte_cambiar_estado,
-                parameters,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        manejarRespuestaCambiarEstado(response);
+            JsonObjectRequest solicitud = new JsonObjectRequest(
+                    Request.Method.POST,
+                    URL_transporte_cambiar_estado,
+                    parameters,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            manejarRespuestaCambiarEstado(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarErrorCambiarEstado(error);
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarErrorCambiarEstado(error);
-                    }
-                }
-        );
+            );
 
-        requestQueue.add(solicitud);
+            requestQueue.add(solicitud);
+        } else {
+            Toast.makeText(this,"No se puede cambiar el estado del traslado debido a que no hay internet",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void manejarErrorCambiarEstado(VolleyError error) {
@@ -236,46 +243,69 @@ public class TransporteActivity extends AppCompatActivity {
     }
 
     private void requestTraslado() {
+        // Si tengo internet busco los datos llamando a la API
+        if (Procedimientos.tieneConexionInternet(this)) {
+            String URL_transporte_info = Constantes.URL_TRANSPORTES + "/" + idTransporteString;
 
-        String URL_transporte_info = Constantes.URL_TRANSPORTES+"/"+idTransporteString;
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JsonObjectRequest solicitud = new JsonObjectRequest(
+                    Request.Method.GET,
+                    URL_transporte_info,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            manejarRespuesta(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            manejarError(error);
 
-        JsonObjectRequest solicitud = new JsonObjectRequest(
-                Request.Method.GET,
-                URL_transporte_info,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        manejarRespuesta(response);
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        manejarError(error);
+            );
 
-                    }
-                }
-        );
-
-        requestQueue.add(solicitud);
+            requestQueue.add(solicitud);
+        } else {
+            // Si no tengo internet uso la base de datos
+            transporte = trasladoInfoBD.getTrasladoInfo(Integer.parseInt(idTransporteString));
+            if (transporte != null)
+                mostrarDatos();
+            else {
+                Toast.makeText(this,"Error obteniendo datos del traslado",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
     }
 
     private void manejarError(VolleyError error) {
-        Log.e(Constantes.TAG_LOG,"error: "+error.getMessage());
         Toast.makeText(this,"Error obteniendo datos del traslado",Toast.LENGTH_LONG).show();
 
-        finish();
+        // Si da error la api uso la base de datos
+        transporte = trasladoInfoBD.getTrasladoInfo(Integer.parseInt(idTransporteString));
+        if (transporte != null)
+            mostrarDatos();
+        else
+            finish();
     }
 
     private void manejarRespuesta(JSONObject respuesta) {
         transporte = TransporteConverter.convertTransporte(respuesta, true);
 
+        // Como obtuve los datos de la API actualizo la linea en mi base
+        trasladoInfoBD.setTrasladosInfo(transporte);
+
+        mostrarDatos();
+    }
+
+    private void mostrarDatos() {
         String fechaString;
 
         if (transporte != null) {
+
             titulo.setText(getResources().getString(R.string.transporte_info_titulo,String.valueOf(transporte.getId()),transporte.getEstado()));
 
             try {
@@ -369,6 +399,9 @@ public class TransporteActivity extends AppCompatActivity {
                 pararGPS();
                 break;
         }
+
+        if (!Procedimientos.tieneConexionInternet(this))
+            boton_iniciar.setEnabled(false);
 
     }
 
