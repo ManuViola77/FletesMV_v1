@@ -33,6 +33,8 @@ public class Constantes {
 
     public static final String extra_iniciar_traslado = "com.bios.mv.fletesmv_v1.extra_iniciar_traslado";
     public static final String extra_finalizar_traslado = "com.bios.mv.fletesmv_v1.extra_finalizar_traslado";
+    public static final String extra_finalizar_traslado_latitud = "com.bios.mv.fletesmv_v1.extra_finalizar_traslado_latitud";
+    public static final String extra_finalizar_traslado_longitud = "com.bios.mv.fletesmv_v1.extra_finalizar_traslado_longitud";
 
     public static final String pendiente = "pendiente";
     public static final String iniciado = "iniciado";
@@ -46,4 +48,5 @@ public class Constantes {
 
     public static final String NOMBRE_TABLA_TRASLADOS = "Traslados";
     public static final String NOMBRE_TABLA_TRASLADOS_INFO = "TrasladosInfo";
+
 }

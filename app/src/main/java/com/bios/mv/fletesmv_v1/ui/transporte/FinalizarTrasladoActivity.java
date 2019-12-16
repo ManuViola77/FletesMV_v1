@@ -34,6 +34,8 @@ public class FinalizarTrasladoActivity extends AppCompatActivity {
     private Button boton_finalizar_traslado;
 
     private int idTraslado;
+    private double latitud;
+    private double longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class FinalizarTrasladoActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             idTraslado = extras.getInt(Constantes.extra_finalizar_traslado);
+            latitud = extras.getDouble(Constantes.extra_finalizar_traslado_latitud);
+            longitud = extras.getDouble(Constantes.extra_finalizar_traslado_longitud);
         }
 
         titulo = findViewById(R.id.finalizar_traslado_titulo);
@@ -98,8 +102,8 @@ public class FinalizarTrasladoActivity extends AppCompatActivity {
                 recepcion.setNombre_receptor(nombre_receptor.getEditText().getText().toString());
                 recepcion.setObservacion(observacion.getEditText().getText().toString());
                 recepcion.setFecha(Procedimientos.getFechaActual());
-                recepcion.setLongitud(-34);
-                recepcion.setLatitud(34);
+                recepcion.setLongitud(longitud);
+                recepcion.setLatitud(latitud);
 
                 JSONObject parameters = RecepcionConverter.convertRecepcionToJSONOBject(recepcion);
 

@@ -190,6 +190,8 @@ public class TransporteActivity extends AppCompatActivity {
     private void finalizarTraslado(View view) {
         Intent intent = new Intent(view.getContext(), FinalizarTrasladoActivity.class);
         intent.putExtra(Constantes.extra_finalizar_traslado,transporte.getId());
+        intent.putExtra(Constantes.extra_finalizar_traslado_latitud,ultimaLatitud);
+        intent.putExtra(Constantes.extra_finalizar_traslado_longitud,ultimaLongitud);
         startActivity(intent);
     }
 
