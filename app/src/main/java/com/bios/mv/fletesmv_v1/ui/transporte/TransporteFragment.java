@@ -141,6 +141,8 @@ public class TransporteFragment extends Fragment {
         List<Transporte> transportes =
                 TransporteConverter.convertFromJsonObject(respuesta);
 
+        trasladoBD.setTraslados(transportes);
+
         transporteAdapter.setTransportes(transportes);
         transporteAdapter.notifyDataSetChanged();
     }
